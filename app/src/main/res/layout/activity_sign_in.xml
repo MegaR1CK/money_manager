@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    tools:context=".SignInActivity">
+
+    <include
+        layout="@layout/logo"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"/>
+
+    <EditText
+        android:id="@+id/field_mail"
+        android:inputType="textEmailAddress"
+        android:hint="@string/mail_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="190dp"
+        android:background="@drawable/background_field"
+        android:textCursorDrawable="@drawable/cursor_drawable"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"/>
+
+    <EditText
+        android:id="@+id/field_password"
+        android:hint="@string/password_hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:inputType="textPassword"
+        android:background="@drawable/background_field"
+        android:textCursorDrawable="@drawable/cursor_drawable"
+        android:paddingStart="20dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="10dp" />
+
+    <Button
+        android:id="@+id/btn_sign_in"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:text="@string/sign_in_title"
+        android:textColor="@color/white"
+        android:background="@drawable/background_button"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:id="@+id/btn_to_sign_up"
+        android:text="@string/sign_up_title"
+        android:textColor="@color/dark_blue"
+        android:background="@drawable/background_button_alt"/>
+
+</LinearLayout>

@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">MoneyManager</string>
+    <string name="mail_hint">E-mail</string>
+    <string name="password_hint">Пароль</string>
+    <string name="password_conf_hint">Подтвердите пароль</string>
+    <string name="sign_in_title">Войти</string>
+    <string name="sign_up_title">Зарегистрироваться</string>
+    <string name="have_account">У меня уже есть аккаунт</string>
+    <string name="error_title">Ошибка!</string>
+    <string name="error_empty_field">Все поля должны быть заполнены!</string>
+    <string name="error_conf_password">Пароли не совпадают!</string>
+    <string name="ok">OK</string>
 </resources>
