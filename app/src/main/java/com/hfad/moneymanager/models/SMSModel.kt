@@ -1,4 +1,4 @@
-package com.hfad.smstest
+package com.hfad.moneymanager.models
 
 data class SMSModel(val id: String?,
                     val address: String?,
