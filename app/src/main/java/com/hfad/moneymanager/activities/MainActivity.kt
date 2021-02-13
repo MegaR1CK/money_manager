@@ -1,8 +1,9 @@
-package com.hfad.moneymanager
+package com.hfad.moneymanager.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.hfad.moneymanager.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
