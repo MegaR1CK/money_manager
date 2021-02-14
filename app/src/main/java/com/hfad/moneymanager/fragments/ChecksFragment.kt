@@ -37,11 +37,11 @@ class ChecksFragment : Fragment() {
         }
 
         if (App.userData?.checks == null)
-            App.userData?.getChecks(setChecksRecycler)
+            activity?.let { App.userData?.getChecks(it, setChecksRecycler) }
         else setChecksRecycler.invoke()
 
         if (App.userData?.debts == null)
-            App.userData?.getDebts(setDebtsRecycler)
+            activity?.let { App.userData?.getDebts(it, setDebtsRecycler) }
         else setDebtsRecycler.invoke()
 
         return view
