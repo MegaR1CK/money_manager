@@ -6,6 +6,9 @@ import android.content.Context
 
 class App : Application() {
     companion object {
+
+        var userData: UserData? = null
+
         fun errorAlert(mes: String, context: Context) {
             AlertDialog.Builder(context)
                 .setTitle(R.string.error_title)

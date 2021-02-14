@@ -1,9 +1,9 @@
 package com.hfad.moneymanager.models
 
-class CheckModel (val name: String,
-                  val type: CheckType,
-                  val number: String?,
-                  val balance: Double) {
+data class CheckModel (val name: String = "",
+                  val type: CheckType = CheckType.Cash,
+                  val number: String? = null,
+                  val balance: Double = 0.0) {
 
     enum class CheckType {
         SberCard, Card, Cash

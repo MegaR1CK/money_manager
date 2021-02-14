@@ -39,6 +39,7 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/debts_sum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/amount_filler"

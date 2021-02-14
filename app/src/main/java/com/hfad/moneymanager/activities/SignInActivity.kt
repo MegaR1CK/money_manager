@@ -7,6 +7,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
+import com.hfad.moneymanager.UserData
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
@@ -15,8 +16,10 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         val auth = Firebase.auth
-        if (auth.currentUser != null)
+        if (auth.currentUser != null) {
+            App.userData = UserData()
             startActivity(Intent(this, HomeActivity::class.java))
+        }
 
         btn_sign_in.setOnClickListener {
             val email = field_mail.text.toString()
@@ -24,6 +27,7 @@ class SignInActivity : AppCompatActivity() {
             if (email.isNotBlank() && password.isNotBlank()) {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
+                        App.userData = UserData()
                         startActivity(Intent(this, HomeActivity::class.java))
                     }
                     .addOnFailureListener {

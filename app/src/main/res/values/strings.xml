@@ -33,6 +33,12 @@
     <string name="accept">Подтвердить</string>
     <string name="rub">₽</string>
     <string name="card_title">Карта</string>
+    <string name="card_with_number">Карта %1$s</string>
     <string name="sber_card_title">Карта Сбербанка</string>
+    <string name="sber_card_with_number">Сбербанк %1$s</string>
     <string name="cash_title">Наличные</string>
+    <string name="amount">%1$.2f ₽</string>
+    <string name="debt_name_toMe">%1$s -> Я</string>
+    <string name="debt_name_fromMe">Я -> %1$s</string>
+    <string name="debt_amount">%1$.2f ₽/%2$.2f ₽</string>
 </resources>

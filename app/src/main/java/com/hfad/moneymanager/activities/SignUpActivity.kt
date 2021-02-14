@@ -7,6 +7,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
+import com.hfad.moneymanager.UserData
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -22,6 +23,7 @@ class SignUpActivity : AppCompatActivity() {
                 if (password == passwordConf) {
                     Firebase.auth.createUserWithEmailAndPassword(mail, password)
                         .addOnSuccessListener {
+                            App.userData = UserData()
                             startActivity(Intent(this, WelcomeActivity::class.java))
                         }
                         .addOnFailureListener {

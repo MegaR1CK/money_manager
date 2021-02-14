@@ -23,7 +23,7 @@ class ChecksAdapter (private val checks: List<CheckModel>)
         val view = holder.container
         val check = checks[position]
         view.check_name.text = check.name
-        view.check_balance.text = check.balance.toString()
+        view.check_balance.text = String.format(view.context.getString(R.string.amount), check.balance)
         view.check_logo.setImageResource(when (check.type) {
             CheckType.SberCard -> R.drawable.sber_logo
             CheckType.Card -> R.drawable.card_logo
