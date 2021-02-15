@@ -20,8 +20,18 @@ class SMSManager (val context: Context) {
         val transactions = mutableListOf<TransactionModel>()
         val regex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
         val pattern = Pattern.compile(regex)
-        smsList = smsList.filter { it.address == "900" &&
-                it.body?.matches(Regex(regex)) == true }.toMutableList()
+
+        val currentCalendar = Calendar.getInstance(TimeZone.getDefault())
+        val smsCalendar = Calendar.getInstance(TimeZone.getDefault())
+
+        smsList = smsList.filter {
+            currentCalendar.timeInMillis = Date().time
+            smsCalendar.timeInMillis = it.date?.toLong() ?: 0
+            it.address == "900" &&
+                    it.body?.matches(Regex(regex)) == true &&
+                    currentCalendar.get(Calendar.MONTH) - smsCalendar.get(Calendar.MONTH) in 0..2 }
+                .toMutableList()
+
         smsList.forEach { sms ->
             val matcher = pattern.matcher(sms.body as CharSequence)
             matcher.find()
