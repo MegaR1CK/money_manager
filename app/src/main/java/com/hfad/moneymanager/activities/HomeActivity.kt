@@ -2,6 +2,9 @@ package com.hfad.moneymanager.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.hfad.moneymanager.App
 import com.hfad.moneymanager.fragments.ChecksFragment
 import com.hfad.moneymanager.R
 import kotlinx.android.synthetic.main.activity_home.*
@@ -25,5 +28,11 @@ class HomeActivity : AppCompatActivity() {
             ft.commit()
             true
         }
+    }
+
+    override fun onBackPressed() {
+        Firebase.auth.signOut()
+        App.userData = null
+        super.onBackPressed()
     }
 }

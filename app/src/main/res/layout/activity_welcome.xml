@@ -8,7 +8,9 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:paddingTop="20dp"
-    android:paddingBottom="20dp">
+    android:paddingBottom="20dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp">
 
     <TextView
         android:layout_width="wrap_content"
@@ -25,22 +27,22 @@
         android:textSize="17sp"
         android:layout_marginTop="20dp"/>
 
+    <CheckBox
+        android:id="@+id/checkbox_cash"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/dark_blue"
+        android:text="@string/cash_title_welcome"
+        android:textSize="18sp"
+        android:layout_gravity="start"
+        android:layout_marginTop="40dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
-
-        <CheckBox
-            android:id="@+id/checkbox_cash"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/dark_blue"
-            android:text="@string/cash_title_welcome"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="10dp"
+        android:id="@+id/layout_cash_settings"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/textView"
@@ -53,8 +55,7 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkbox_cash" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/field_cash_start_amount"
@@ -62,10 +63,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:backgroundTint="@color/dark_blue"
-            android:enabled="false"
             android:inputType="numberDecimal"
-            android:textSize="14sp"
             android:textCursorDrawable="@drawable/cursor_drawable"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/textView" />
 
@@ -81,34 +81,33 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <CheckBox
+        android:id="@+id/checkbox_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:buttonTint="@color/dark_blue"
+        android:text="@string/card_title_welcome"
+        android:textSize="18sp"
+        android:layout_gravity="start"
+        android:layout_marginTop="40dp"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_card_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp">
-
-        <CheckBox
-            android:id="@+id/checkbox_card"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:buttonTint="@color/dark_blue"
-            android:text="@string/card_title_welcome"
-            android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="10dp"
+        android:visibility="invisible">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:text="@string/card_type"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/spinner_card_type"
-            app:layout_constraintTop_toBottomOf="@+id/checkbox_card" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
             android:id="@+id/spinner_card_type"
@@ -120,7 +119,7 @@
             app:layout_constraintTop_toTopOf="@+id/textView2" />
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/card_start_amount_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -137,46 +136,49 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="12dp"
             android:backgroundTint="@color/dark_blue"
-            android:enabled="false"
             android:inputType="numberDecimal"
             android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="14sp"
-            app:layout_constraintStart_toEndOf="@+id/textView1"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/card_start_amount_title"
             app:layout_constraintTop_toBottomOf="@+id/spinner_card_type" />
 
         <TextView
+            android:id="@+id/card_rub"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:text="@string/rub"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="@+id/textView1"
+            app:layout_constraintBottom_toBottomOf="@+id/card_start_amount_title"
             app:layout_constraintStart_toEndOf="@+id/field_card_start_amount" />
 
         <CheckBox
             android:id="@+id/checkbox_import"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
+            android:layout_marginTop="20dp"
             android:buttonTint="@color/dark_blue"
             android:text="@string/import_title"
             android:textSize="18sp"
-            android:enabled="false"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkbox_card" />
+            app:layout_constraintTop_toBottomOf="@+id/card_start_amount_title" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/btn_welcome_accept"
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:background="@drawable/background_button"
-        android:text="@string/accept"
-        android:textColor="@color/white"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:layout_marginTop="130dp" />
+        <Button
+            android:id="@+id/btn_welcome_accept"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:background="@drawable/background_button"
+            android:text="@string/accept"
+            android:textColor="@color/white"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_gravity="bottom|center_horizontal"/>
+    </FrameLayout>
 </LinearLayout>

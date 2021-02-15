@@ -22,7 +22,10 @@ class ChecksAdapter (private val checks: List<CheckModel>)
     override fun onBindViewHolder(holder: CheckHolder, position: Int) {
         val view = holder.container
         val check = checks[position]
-        view.check_name.text = check.name
+        view.check_name.text =
+                if (check.type == CheckType.SberCard && check.number != null)
+                    String.format(view.context.getString(R.string.sber_card_with_number), check.number)
+                else check.name
         view.check_balance.text = String.format(view.context.getString(R.string.amount), check.balance)
         view.check_logo.setImageResource(when (check.type) {
             CheckType.SberCard -> R.drawable.sber_logo

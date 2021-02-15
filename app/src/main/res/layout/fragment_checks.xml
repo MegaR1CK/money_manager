@@ -18,11 +18,26 @@
         android:textStyle="bold"
         android:textSize="18sp" />
 
-    <androidx.recyclerview.widget.RecyclerView
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/recycler_checks"
-        android:layout_marginTop="10dp" />
+        android:minHeight="100dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recycler_checks"
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"/>
+
+        <TextView
+            android:id="@+id/no_checks_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_checks"
+            android:visibility="invisible" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -42,7 +57,6 @@
             android:id="@+id/debts_sum"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/amount_filler"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:textSize="18sp"
@@ -52,13 +66,15 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:minHeight="100dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/recycler_debts"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="10dp"
+            android:overScrollMode="never"/>
 
         <TextView
             android:id="@+id/no_debts_title"

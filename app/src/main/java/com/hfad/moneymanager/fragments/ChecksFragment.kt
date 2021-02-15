@@ -24,16 +24,22 @@ class ChecksFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_checks, container, false)
 
         val setChecksRecycler = {
-            view.recycler_checks.layoutManager = LinearLayoutManager(activity)
-            view.recycler_checks.adapter = App.userData?.checks?.let { ChecksAdapter(it) }
+            if (App.userData?.checks?.isNotEmpty() == true) {
+                view.recycler_checks.layoutManager = LinearLayoutManager(activity)
+                view.recycler_checks.adapter = App.userData?.checks?.let { ChecksAdapter(it) }
+            }
+            else no_checks_title.visibility = View.VISIBLE
         }
 
         val setDebtsRecycler = {
-            view.recycler_debts.layoutManager = LinearLayoutManager(activity)
-            view.recycler_debts.adapter = App.userData?.debts?.let { DebtAdapter(it) }
-            debts_sum.text = String.format(getString(R.string.debt_amount,
-                    App.userData?.debts?.filter { it.type == DebtModel.DebtType.toMe }?.sumOf { it.amount },
-                    App.userData?.debts?.filter { it.type == DebtModel.DebtType.fromMe }?.sumOf { it.amount }))
+            if (App.userData?.debts?.isNotEmpty() == true) {
+                view.recycler_debts.layoutManager = LinearLayoutManager(activity)
+                view.recycler_debts.adapter = App.userData?.debts?.let { DebtAdapter(it) }
+                view.debts_sum.text = String.format(getString(R.string.debt_amount),
+                        App.userData?.debts?.filter { it.type == DebtModel.DebtType.toMe }?.sumOf { it.amount },
+                        App.userData?.debts?.filter { it.type == DebtModel.DebtType.fromMe }?.sumOf { it.amount })
+            }
+            else no_debts_title.visibility = View.VISIBLE
         }
 
         if (App.userData?.checks == null)

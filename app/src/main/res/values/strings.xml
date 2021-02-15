@@ -18,6 +18,7 @@
     <string name="debts_title">ДОЛГИ</string>
     <string name="amount_filler">000.00 ₽</string>
     <string name="no_debts">Нет долгов</string>
+    <string name="no_checks">Нет счетов</string>
     <string name="check_name_filler">Счет</string>
     <string name="welcome_title">Добро пожаловать!</string>
     <string name="welcome_desc">Настройте свои счета и операции</string>
