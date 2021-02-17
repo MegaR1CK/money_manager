@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.activities.AddCheckActivity
+import com.hfad.moneymanager.activities.AddDebtActivity
 import com.hfad.moneymanager.adapters.ChecksAdapter
 import com.hfad.moneymanager.adapters.DebtAdapter
 import com.hfad.moneymanager.models.DebtModel
@@ -27,6 +28,10 @@ class ChecksFragment : Fragment() {
 
         view.btn_add_check.setOnClickListener {
             startActivity(Intent(activity, AddCheckActivity::class.java))
+        }
+
+        view.btn_add_debt.setOnClickListener {
+            startActivity(Intent(activity, AddDebtActivity::class.java))
         }
 
         return view

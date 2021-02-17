@@ -61,4 +61,12 @@
     <string name="check_number_hint">Последние четыре цифры номера карты (для импорта расходов)</string>
     <string name="check_import_title">Импорт транзакций из SMS</string>
     <string name="check_edit_btn_title">Сохранить</string>
+    <string name="debt_type_hint">Тип долга</string>
+    <string name="debt_amount_hint">Сумма долга (в рублях)</string>
+    <string name="debt_person_hint">Отправитель/Получатель долга</string>
+    <string name="debt_date_hint">Дата возвращения долга (необязательно)</string>
+    <string-array name="debt_types">
+        <item>Я должен</item>
+        <item>Мне должны</item>
+    </string-array>
 </resources>

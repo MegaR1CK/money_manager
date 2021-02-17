@@ -15,6 +15,7 @@ import com.hfad.moneymanager.models.CheckModel
 import kotlinx.android.synthetic.main.activity_add_check.*
 
 class AddCheckActivity : AppCompatActivity() {
+    //TODO: label
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_check)
@@ -38,7 +39,7 @@ class AddCheckActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_check_edit, menu)
+        menuInflater.inflate(R.menu.menu_edit, menu)
         return super.onCreateOptionsMenu(menu)
     }
 

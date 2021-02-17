@@ -12,22 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MoneyManager">
-
-        <activity android:name=".activities.AddCheckActivity"
+        <activity android:name=".activities.AddDebtActivity"
             android:theme="@style/Theme.MoneyManager.NoActionBar"/>
-
-        <activity android:name=".activities.WelcomeActivity"
-            android:theme="@style/Theme.MoneyManager.NoActionBar"/>
-
+        <activity
+            android:name=".activities.AddCheckActivity"
+            android:theme="@style/Theme.MoneyManager.NoActionBar" />
+        <activity
+            android:name=".activities.WelcomeActivity"
+            android:theme="@style/Theme.MoneyManager.NoActionBar" />
         <activity android:name=".activities.HomeActivity" />
-
-        <activity android:name=".activities.SignUpActivity"
-            android:theme="@style/Theme.MoneyManager.NoActionBar"/>
-
-        <activity android:name=".activities.SignInActivity"
-            android:theme="@style/Theme.MoneyManager.NoActionBar"/>
-
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.SignUpActivity"
+            android:theme="@style/Theme.MoneyManager.NoActionBar" />
+        <activity
+            android:name=".activities.SignInActivity"
+            android:theme="@style/Theme.MoneyManager.NoActionBar" />
+        <activity
+            android:name=".activities.MainActivity"
             android:theme="@style/Theme.MoneyManager.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
