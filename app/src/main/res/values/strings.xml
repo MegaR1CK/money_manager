@@ -9,6 +9,7 @@
     <string name="error_title">Ошибка!</string>
     <string name="error_empty_field">Все поля должны быть заполнены!</string>
     <string name="error_conf_password">Пароли не совпадают!</string>
+    <string name="error_incorrect_input">Некоторые поля заполнены неправильно!</string>
     <string name="ok">OK</string>
     <string name="menu_checks">Счета</string>
     <string name="menu_transactions">Операции</string>
@@ -46,4 +47,18 @@
     <string name="signout_desc">Выйти из аккаунта?</string>
     <string name="yes">Да</string>
     <string name="cancel">Отмена</string>
+    <string name="add_check_btn_title">Добавить карту или счет</string>
+    <string name="add_debt_btn_title">Добавить долг</string>
+    <string name="add_check_title">Добавление счета</string>
+    <string name="add_debt_title">Добавление долга</string>
+    <string name="check_name_hint">Название счета</string>
+    <string name="check_type_hint">Тип счета</string>
+    <string-array name="check_types">
+        <item>Наличные</item>
+        <item>Карта Сбербанка</item>
+        <item>Карта другого банка</item>
+    </string-array>
+    <string name="check_number_hint">Последние четыре цифры номера карты (для импорта расходов)</string>
+    <string name="check_import_title">Импорт транзакций из SMS</string>
+    <string name="check_edit_btn_title">Сохранить</string>
 </resources>
