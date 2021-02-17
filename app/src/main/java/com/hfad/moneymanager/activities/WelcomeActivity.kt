@@ -70,15 +70,12 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         btn_welcome_accept.setOnClickListener {
-
             if (checkbox_import.isChecked) {
-                val permStatus = ContextCompat.checkSelfPermission(this,
-                        android.Manifest.permission.READ_SMS)
+                val permStatus = ContextCompat
+                        .checkSelfPermission(this, android.Manifest.permission.READ_SMS)
                 if (permStatus == PackageManager.PERMISSION_GRANTED) {
                     transactions = smsManager.getSmsTransactions()
-                    databaseUser
-                            .child("transactions")
-                            .setValue(transactions)
+                    databaseUser.child("transactions").setValue(transactions)
                 }
                 else ActivityCompat.requestPermissions(this,
                         arrayOf(android.Manifest.permission.READ_SMS), 100)
@@ -114,9 +111,7 @@ class WelcomeActivity : AppCompatActivity() {
                                             grantResults: IntArray) {
         if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
             transactions = smsManager.getSmsTransactions()
-            databaseUser
-                    .child("transactions")
-                    .setValue(transactions)
+            databaseUser.child("transactions").setValue(transactions)
         }
     }
 }

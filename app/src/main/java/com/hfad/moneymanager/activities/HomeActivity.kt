@@ -1,12 +1,14 @@
 package com.hfad.moneymanager.activities
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
-import com.hfad.moneymanager.fragments.ChecksFragment
 import com.hfad.moneymanager.R
+import com.hfad.moneymanager.fragments.ChecksFragment
 import kotlinx.android.synthetic.main.activity_home.*
 
 class HomeActivity : AppCompatActivity() {
@@ -31,8 +33,16 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        Firebase.auth.signOut()
-        App.userData = null
-        super.onBackPressed()
+        AlertDialog.Builder(this)
+                .setTitle(R.string.signout_title)
+                .setMessage(R.string.signout_desc)
+                .setPositiveButton(R.string.yes) { dialog, which ->
+                    Firebase.auth.signOut()
+                    App.userData = null
+                    startActivity(Intent(this, SignInActivity::class.java))
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .create()
+                .show()
     }
 }

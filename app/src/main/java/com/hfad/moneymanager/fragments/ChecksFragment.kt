@@ -36,8 +36,12 @@ class ChecksFragment : Fragment() {
                 view.recycler_debts.layoutManager = LinearLayoutManager(activity)
                 view.recycler_debts.adapter = App.userData?.debts?.let { DebtAdapter(it) }
                 view.debts_sum.text = String.format(getString(R.string.debt_amount),
-                        App.userData?.debts?.filter { it.type == DebtModel.DebtType.toMe }?.sumOf { it.amount },
-                        App.userData?.debts?.filter { it.type == DebtModel.DebtType.fromMe }?.sumOf { it.amount })
+                        App.userData?.debts
+                        ?.filter { it.type == DebtModel.DebtType.toMe }
+                        ?.sumOf { it.amount },
+                        App.userData?.debts
+                        ?.filter { it.type == DebtModel.DebtType.fromMe }
+                        ?.sumOf { it.amount })
             }
             else no_debts_title.visibility = View.VISIBLE
         }

@@ -16,10 +16,6 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         val auth = Firebase.auth
-        if (auth.currentUser != null) {
-            App.userData = UserData()
-            startActivity(Intent(this, HomeActivity::class.java))
-        }
 
         btn_sign_in.setOnClickListener {
             val email = field_mail.text.toString()

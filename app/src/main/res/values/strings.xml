@@ -42,4 +42,8 @@
     <string name="debt_name_toMe">%1$s -> Я</string>
     <string name="debt_name_fromMe">Я -> %1$s</string>
     <string name="debt_amount">%1$.2f ₽/%2$.2f ₽</string>
+    <string name="signout_title">Выход</string>
+    <string name="signout_desc">Выйти из аккаунта?</string>
+    <string name="yes">Да</string>
+    <string name="cancel">Отмена</string>
 </resources>

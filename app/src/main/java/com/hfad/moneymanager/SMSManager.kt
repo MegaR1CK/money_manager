@@ -27,10 +27,10 @@ class SMSManager (val context: Context) {
         smsList = smsList.filter {
             currentCalendar.timeInMillis = Date().time
             smsCalendar.timeInMillis = it.date?.toLong() ?: 0
-            it.address == "900" &&
-                    it.body?.matches(Regex(regex)) == true &&
-                    currentCalendar.get(Calendar.MONTH) - smsCalendar.get(Calendar.MONTH) in 0..2 }
-                .toMutableList()
+            val difference = currentCalendar.get(Calendar.MONTH) - smsCalendar.get(Calendar.MONTH)
+            it.address == "900" && it.body?.matches(Regex(regex)) == true && (difference in 0..1 ||
+                    difference == -11)
+        }
 
         smsList.forEach { sms ->
             val matcher = pattern.matcher(sms.body as CharSequence)
