@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.SMSManager
 import com.hfad.moneymanager.models.CheckModel
@@ -70,13 +71,12 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         btn_welcome_accept.setOnClickListener {
+            var success = true
             if (checkbox_import.isChecked) {
                 val permStatus = ContextCompat
                         .checkSelfPermission(this, android.Manifest.permission.READ_SMS)
-                if (permStatus == PackageManager.PERMISSION_GRANTED) {
+                if (permStatus == PackageManager.PERMISSION_GRANTED)
                     transactions = smsManager.getSmsTransactions()
-                    databaseUser.child("transactions").setValue(transactions)
-                }
                 else ActivityCompat.requestPermissions(this,
                         arrayOf(android.Manifest.permission.READ_SMS), 100)
             }
@@ -90,10 +90,20 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             if (checkbox_card.isChecked && spinner_card_type.selectedItemPosition == 0) {
-                databaseUser.child("checks").push().setValue(CheckModel(
+                val number = field_card_number.text.toString()
+                if ((number.isNotBlank() && number.length == 4) || number.isBlank()) {
+                    transactions = transactions?.filter { it.card == number }
+                    databaseUser.child("checks").push().setValue(CheckModel(
                         getString(R.string.sber_card_title), CheckType.SberCard,
-                        transactions?.first()?.card, transactions?.first()?.balance ?: 0.0
-                ))
+                        if (number.isBlank()) null else number,
+                        transactions?.first()?.balance ?: 0.0,
+                        checkbox_import.isChecked
+                    ))
+                    transactions?.let {
+                        databaseUser.child("transactions").setValue(transactions)
+                    }
+                }
+                else success = false
             }
 
             if (checkbox_card.isChecked && spinner_card_type.selectedItemPosition == 1) {
@@ -102,7 +112,8 @@ class WelcomeActivity : AppCompatActivity() {
                         field_card_start_amount.text.toString().toDoubleOrNull() ?: 0.0
                 ))
             }
-            startActivity(Intent(this, HomeActivity::class.java))
+            if (success) startActivity(Intent(this, HomeActivity::class.java))
+            else App.errorAlert(getString(R.string.error_incorrect_input), this)
         }
     }
 

@@ -15,7 +15,7 @@ class SMSManager (val context: Context) {
 
     private val categories = initCategories()
 
-    fun getSmsTransactions(): List<TransactionModel> {
+    fun getSmsTransactions(vararg numbers: String?): List<TransactionModel> {
         var smsList = getSMSList()
         val transactions = mutableListOf<TransactionModel>()
         val regex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
@@ -28,8 +28,8 @@ class SMSManager (val context: Context) {
             currentCalendar.timeInMillis = Date().time
             smsCalendar.timeInMillis = it.date?.toLong() ?: 0
             val difference = currentCalendar.get(Calendar.MONTH) - smsCalendar.get(Calendar.MONTH)
-            it.address == "900" && it.body?.matches(Regex(regex)) == true && (difference in 0..1 ||
-                    difference == -11)
+            it.address == "900" && it.body?.matches(Regex(regex)) == true &&
+                    (difference in 0..1 || difference == -11)
         }
 
         smsList.forEach { sms ->
@@ -47,6 +47,7 @@ class SMSManager (val context: Context) {
                     )
             )
         }
+        if (numbers.isNotEmpty()) transactions.filter { numbers.contains(it.card) }
         return setCategories(transactions)
     }
 

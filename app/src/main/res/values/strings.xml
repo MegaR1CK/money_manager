@@ -31,6 +31,7 @@
         <item>Сбербанк</item>
         <item>Другой</item>
     </string-array>
+    <string name="card_number">Последние 4 цифры\nномера карты</string>
     <string name="import_title">Импортировать операции из SMS (за последний месяц)</string>
     <string name="accept">Подтвердить</string>
     <string name="rub">₽</string>
