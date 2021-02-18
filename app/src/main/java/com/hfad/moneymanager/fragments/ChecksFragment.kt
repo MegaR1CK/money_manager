@@ -43,7 +43,8 @@ class ChecksFragment : Fragment() {
         val setChecksRecycler = {
             if (App.userData?.checks?.isNotEmpty() == true) {
                 recycler_checks.layoutManager = LinearLayoutManager(activity)
-                recycler_checks.adapter = App.userData?.checks?.let { ChecksAdapter(it) }
+                recycler_checks.adapter = App.userData?.checks
+                        ?.let { App.userData?.transactions?.let { it1 -> ChecksAdapter(it, it1) } }
             }
             else no_checks_title.visibility = View.VISIBLE
         }
@@ -62,13 +63,12 @@ class ChecksFragment : Fragment() {
             }
             else no_debts_title.visibility = View.VISIBLE
         }
-
-        if (App.userData?.checks == null)
-            activity?.let { App.userData?.getChecks(it, setChecksRecycler) }
-        else setChecksRecycler.invoke()
-
-        if (App.userData?.debts == null)
-            activity?.let { App.userData?.getDebts(it, setDebtsRecycler) }
-        else setDebtsRecycler.invoke()
+        if (App.userData?.checks == null || App.userData?.debts == null ||
+            App.userData?.transactions == null || App.userData?.categories == null)
+                activity?.let { App.userData?.initUserData(it, setChecksRecycler, setDebtsRecycler) }
+        else {
+            setChecksRecycler.invoke()
+            setDebtsRecycler.invoke()
+        }
     }
 }

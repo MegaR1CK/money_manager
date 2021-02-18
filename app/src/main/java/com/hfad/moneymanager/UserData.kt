@@ -8,6 +8,7 @@ import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.Debt
 import com.hfad.moneymanager.models.Transaction
+import java.util.*
 
 class UserData {
 
@@ -19,7 +20,46 @@ class UserData {
     var checks: List<Check>? = null
     var debts: List<Debt>? = null
     var transactions: MutableList<Transaction>? = null
-    var categories: MutableMap<String, List<String>> = getTransactionCategories()
+    var categories: MutableMap<String, List<String>>? = null
+
+    fun initUserData(context: Context, checksOperation: () -> Unit, debtOperation: () -> Unit) {
+        val getLastTransactions = {
+            getLastTransactions(context) {
+                getChecks(context) { checksOperation.invoke() }
+                getDebts(context) { debtOperation.invoke() }
+            }
+        }
+        val getTransactions = { getTransactions(context) { getLastTransactions.invoke() } }
+
+        getTransactionCategories(context) {
+            getTransactions.invoke()
+        }
+    }
+
+    private fun getLastTransactions(context: Context, operation: () -> Unit) {
+        val database = Firebase.database.reference
+            .child("users")
+            .child(Firebase.auth.currentUser?.uid ?: "")
+
+        val smsManager = categories?.let { SMSManager(context, it) }
+
+        database.child("lastCheckTime").get()
+            .addOnSuccessListener {
+                val lastCheckTime = it.getValue<Long>() ?: Date().time
+                val lastTransactions = smsManager
+                    ?.getSmsTransactions(range = LongRange(lastCheckTime, Date().time))
+                lastTransactions?.forEach { transaction ->
+                    database.child("transactions").push().setValue(transaction)
+                }
+                database.child("lastCheckTime").setValue(Date().time)
+                App.userData?.transactions?.addAll(lastTransactions ?: listOf())
+                App.userData?.transactions?.sortByDescending { it.timeMillis }
+                operation.invoke()
+            }
+            .addOnFailureListener {
+                it.message?.let { it1 -> App.errorAlert(it1, context) }
+            }
+    }
 
     fun getChecks(context: Context, operation: () -> Unit) {
         userDbRef.child("checks").get()
@@ -60,14 +100,19 @@ class UserData {
             }
     }
 
-    private fun getTransactionCategories(): MutableMap<String, List<String>> {
+    private fun getTransactionCategories(context: Context, operation: () -> Unit) {
         val databaseCat = Firebase.database.reference.child("categories")
-        val categories = mutableMapOf<String, List<String>>()
-        databaseCat.get().addOnSuccessListener {
-            it.children.forEach { it1 ->
-                categories[it1.key ?: "key"] = it1.getValue<List<String>>() ?: listOf()
+        val response = mutableMapOf<String, List<String>>()
+        databaseCat.get()
+            .addOnSuccessListener {
+                it.children.forEach { it1 ->
+                    response[it1.key ?: "key"] = it1.getValue<List<String>>() ?: listOf()
+                }
+                categories = response
+                operation.invoke()
             }
-        }
-        return categories
+            .addOnFailureListener {
+                it.message?.let { it1 -> App.errorAlert(it1, context) }
+            }
     }
 }

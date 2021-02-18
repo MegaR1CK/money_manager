@@ -7,9 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.Check.CheckType
+import com.hfad.moneymanager.models.Transaction
 import kotlinx.android.synthetic.main.item_check.view.*
 
-class ChecksAdapter (private val checks: List<Check>)
+class ChecksAdapter (private val checks: List<Check>, private var transactions: List<Transaction>)
     : RecyclerView.Adapter<ChecksAdapter.CheckHolder>() {
 
     inner class CheckHolder (val container: ConstraintLayout) : RecyclerView.ViewHolder(container)
@@ -22,8 +23,15 @@ class ChecksAdapter (private val checks: List<Check>)
     override fun onBindViewHolder(holder: CheckHolder, position: Int) {
         val view = holder.container
         val check = checks[position]
+        // Не протестировано
+        if (check.type == CheckType.SberCard && check.allowImport) {
+            transactions = transactions.filter { it.card == check.number }
+            view.check_balance.text = String.format(view.context.getString(R.string.amount),
+                    transactions.first().balance)
+        }
+        else view.check_balance.text = String.format(view.context.getString(R.string.amount),
+                check.balance)
         view.check_name.text = check.name
-        view.check_balance.text = String.format(view.context.getString(R.string.amount), check.balance)
         view.check_logo.setImageResource(when (check.type) {
             CheckType.SberCard -> R.drawable.sber_logo
             CheckType.Card -> R.drawable.card_logo
