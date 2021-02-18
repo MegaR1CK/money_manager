@@ -11,13 +11,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
-class SMSManager (val context: Context) {
+class SMSManager (val context: Context, private val categories: MutableMap<String, List<String>>) {
 
-    private val categories = initCategories()
-
-    fun getSmsTransactions(vararg numbers: String?): List<Transaction> {
+    fun getSmsTransactions(numbers: List<String>? = null, range: LongRange? = null): List<Transaction> {
         var smsList = getSMSList()
-        val transactions = mutableListOf<Transaction>()
+        var transactions = mutableListOf<Transaction>()
         val regex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
         val pattern = Pattern.compile(regex)
 
@@ -40,6 +38,7 @@ class SMSManager (val context: Context) {
                     Transaction(
                             matcher.group(1) ?: "nf",
                             matcher.group(2) ?: "nf",
+                            sms.date?.toLong() ?: 0,
                             matcher.group(3)?.toDoubleOrNull() ?: 0.0,
                             matcher.group(4) ?: "nf",
                             matcher.group(5)?.toDoubleOrNull() ?: 0.0,
@@ -47,7 +46,10 @@ class SMSManager (val context: Context) {
                     )
             )
         }
-        if (numbers.isNotEmpty()) transactions.filter { numbers.contains(it.card) }
+        if (numbers?.isNotEmpty() == true)
+            transactions = transactions.filter { numbers.contains(it.card) }.toMutableList()
+        if (range != null)
+            transactions = transactions.filter { it.timeMillis in range}.toMutableList()
         return setCategories(transactions)
     }
 
@@ -70,17 +72,6 @@ class SMSManager (val context: Context) {
         }
         cursor?.close()
         return smsList
-    }
-
-    private fun initCategories(): MutableMap<String, List<String>> {
-        val databaseCat = Firebase.database.reference.child("categories")
-        val categories = mutableMapOf<String, List<String>>()
-        databaseCat.get().addOnSuccessListener {
-            it.children.forEach { it1 ->
-                categories[it1.key ?: "key"] = it1.getValue<List<String>>() ?: listOf()
-            }
-        }
-        return categories
     }
 
     private fun setCategories(transactions: List<Transaction>): List<Transaction> {

@@ -4,14 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.fragments.ChecksFragment
+import com.hfad.moneymanager.fragments.TransactionsFragment
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.fragment_checks.*
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +26,7 @@ class HomeActivity : AppCompatActivity() {
             val ft = supportFragmentManager.beginTransaction()
             when (it.itemId) {
                 R.id.menu_checks -> ft.replace(R.id.fragment_container, ChecksFragment())
+                R.id.menu_transactions -> ft.replace(R.id.fragment_container, TransactionsFragment())
             }
             ft.commit()
             true

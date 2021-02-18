@@ -18,6 +18,7 @@ import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.Check.CheckType
 import com.hfad.moneymanager.models.Transaction
 import kotlinx.android.synthetic.main.activity_welcome.*
+import java.util.*
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -26,8 +27,6 @@ class WelcomeActivity : AppCompatActivity() {
     private val databaseUser = Firebase.database.reference
             .child("users")
             .child(user?.uid ?: "id")
-
-    private val smsManager = SMSManager(this)
 
     var transactions: List<Transaction>? = null
 
@@ -72,11 +71,12 @@ class WelcomeActivity : AppCompatActivity() {
 
         btn_welcome_accept.setOnClickListener {
             var success = true
+            val smsManager = App.userData?.categories?.let { it1 -> SMSManager(this, it1) }
             if (checkbox_import.isChecked) {
-                val permStatus = ContextCompat
-                        .checkSelfPermission(this, android.Manifest.permission.READ_SMS)
+                val permStatus = ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.READ_SMS)
                 if (permStatus == PackageManager.PERMISSION_GRANTED)
-                    transactions = smsManager.getSmsTransactions()
+                    transactions = smsManager?.getSmsTransactions()
                 else ActivityCompat.requestPermissions(this,
                         arrayOf(android.Manifest.permission.READ_SMS), 100)
             }
@@ -100,7 +100,12 @@ class WelcomeActivity : AppCompatActivity() {
                         checkbox_import.isChecked
                     ))
                     transactions?.let {
-                        databaseUser.child("transactions").setValue(transactions)
+                        databaseUser
+                            .child("transactions")
+                            .setValue(transactions)
+                        databaseUser
+                            .child("lastCheckTime")
+                            .setValue(Date().time)
                     }
                 }
                 else success = false
@@ -120,9 +125,8 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(requestCode: Int,
                                             permissions: Array<out String>,
                                             grantResults: IntArray) {
-        if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED) {
-            transactions = smsManager.getSmsTransactions()
-            databaseUser.child("transactions").setValue(transactions)
-        }
+        val smsManager = App.userData?.categories?.let { it1 -> SMSManager(this, it1) }
+        if (grantResults.isNotEmpty() && grantResults.first() == PackageManager.PERMISSION_GRANTED)
+            transactions = smsManager?.getSmsTransactions()
     }
 }

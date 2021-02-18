@@ -7,6 +7,7 @@ import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.Debt
+import com.hfad.moneymanager.models.Transaction
 
 class UserData {
 
@@ -17,6 +18,8 @@ class UserData {
 
     var checks: List<Check>? = null
     var debts: List<Debt>? = null
+    var transactions: MutableList<Transaction>? = null
+    var categories: MutableMap<String, List<String>> = getTransactionCategories()
 
     fun getChecks(context: Context, operation: () -> Unit) {
         userDbRef.child("checks").get()
@@ -42,5 +45,29 @@ class UserData {
                 .addOnFailureListener {
                     it.message?.let { it1 -> App.errorAlert(it1, context) }
                 }
+    }
+
+    fun getTransactions(context: Context, operation: () -> Unit) {
+        userDbRef.child("transactions").get()
+            .addOnSuccessListener { it1 ->
+                val response = mutableListOf<Transaction>()
+                it1.children.forEach { response.add(it.getValue<Transaction>()!!) }
+                transactions = response
+                operation.invoke()
+            }
+            .addOnFailureListener {
+                it.message?.let { it1 -> App.errorAlert(it1, context) }
+            }
+    }
+
+    private fun getTransactionCategories(): MutableMap<String, List<String>> {
+        val databaseCat = Firebase.database.reference.child("categories")
+        val categories = mutableMapOf<String, List<String>>()
+        databaseCat.get().addOnSuccessListener {
+            it.children.forEach { it1 ->
+                categories[it1.key ?: "key"] = it1.getValue<List<String>>() ?: listOf()
+            }
+        }
+        return categories
     }
 }
