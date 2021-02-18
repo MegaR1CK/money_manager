@@ -14,9 +14,9 @@ import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.SMSManager
-import com.hfad.moneymanager.models.CheckModel
-import com.hfad.moneymanager.models.CheckModel.CheckType
-import com.hfad.moneymanager.models.TransactionModel
+import com.hfad.moneymanager.models.Check
+import com.hfad.moneymanager.models.Check.CheckType
+import com.hfad.moneymanager.models.Transaction
 import kotlinx.android.synthetic.main.activity_welcome.*
 
 class WelcomeActivity : AppCompatActivity() {
@@ -29,7 +29,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private val smsManager = SMSManager(this)
 
-    var transactions: List<TransactionModel>? = null
+    var transactions: List<Transaction>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +82,7 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             if (checkbox_cash.isChecked) {
-                databaseUser.child("checks").push().setValue(CheckModel(
+                databaseUser.child("checks").push().setValue(Check(
                         getString(R.string.cash_title),
                         CheckType.Cash, null,
                         field_cash_start_amount.text.toString().toDoubleOrNull() ?: 0.0
@@ -93,7 +93,7 @@ class WelcomeActivity : AppCompatActivity() {
                 val number = field_card_number.text.toString()
                 if ((number.isNotBlank() && number.length == 4) || number.isBlank()) {
                     transactions = transactions?.filter { it.card == number }
-                    databaseUser.child("checks").push().setValue(CheckModel(
+                    databaseUser.child("checks").push().setValue(Check(
                         getString(R.string.sber_card_title), CheckType.SberCard,
                         if (number.isBlank()) null else number,
                         transactions?.first()?.balance ?: 0.0,
@@ -107,7 +107,7 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             if (checkbox_card.isChecked && spinner_card_type.selectedItemPosition == 1) {
-                databaseUser.child("checks").push().setValue(CheckModel(
+                databaseUser.child("checks").push().setValue(Check(
                         getString(R.string.card_title), CheckType.Card, null,
                         field_card_start_amount.text.toString().toDoubleOrNull() ?: 0.0
                 ))

@@ -5,8 +5,8 @@ import android.net.Uri
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
-import com.hfad.moneymanager.models.SMSModel
-import com.hfad.moneymanager.models.TransactionModel
+import com.hfad.moneymanager.models.SMS
+import com.hfad.moneymanager.models.Transaction
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -15,9 +15,9 @@ class SMSManager (val context: Context) {
 
     private val categories = initCategories()
 
-    fun getSmsTransactions(vararg numbers: String?): List<TransactionModel> {
+    fun getSmsTransactions(vararg numbers: String?): List<Transaction> {
         var smsList = getSMSList()
-        val transactions = mutableListOf<TransactionModel>()
+        val transactions = mutableListOf<Transaction>()
         val regex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
         val pattern = Pattern.compile(regex)
 
@@ -37,7 +37,7 @@ class SMSManager (val context: Context) {
             matcher.find()
             val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             transactions.add(
-                    TransactionModel(
+                    Transaction(
                             matcher.group(1) ?: "nf",
                             matcher.group(2) ?: "nf",
                             matcher.group(3)?.toDoubleOrNull() ?: 0.0,
@@ -51,13 +51,13 @@ class SMSManager (val context: Context) {
         return setCategories(transactions)
     }
 
-    private fun getSMSList(): List<SMSModel> {
+    private fun getSMSList(): List<SMS> {
         val cursor = context.contentResolver.query(Uri.parse("content://sms/inbox"),
                 null, null, null, null)
-        val smsList = mutableListOf<SMSModel>()
+        val smsList = mutableListOf<SMS>()
         if (cursor?.moveToFirst() == true) {
             do {
-                smsList.add(SMSModel(
+                smsList.add(SMS(
                         cursor.getString(0),
                         cursor.getString(2),
                         cursor.getString(4),
@@ -83,7 +83,7 @@ class SMSManager (val context: Context) {
         return categories
     }
 
-    private fun setCategories(transactions: List<TransactionModel>): List<TransactionModel> {
+    private fun setCategories(transactions: List<Transaction>): List<Transaction> {
         transactions.forEach lit@{ model ->
             categories.forEach { category ->
                 if (category.value.contains(model.dest)) {

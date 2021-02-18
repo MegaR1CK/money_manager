@@ -11,7 +11,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
-import com.hfad.moneymanager.models.CheckModel
+import com.hfad.moneymanager.models.Check
+import com.hfad.moneymanager.models.DataCheckResponse
 import kotlinx.android.synthetic.main.activity_add_check.*
 
 class AddCheckActivity : AppCompatActivity() {
@@ -52,34 +53,39 @@ class AddCheckActivity : AppCompatActivity() {
         val name = field_check_name.text.toString()
         val balance = field_start_amount.text.toString()
 
-        if (name.isNotBlank() && balance.isNotBlank()) {
-            if (balance.toDoubleOrNull() != null) {
-                val pos = spinner_check_type.selectedItemPosition
-                if (pos == 0 || pos == 2) {
-                    database.push().setValue(CheckModel(
+        val checkResp = checkData(name, balance)
+        if (checkResp.isSuccessful) {
+            val pos = spinner_check_type.selectedItemPosition
+            if (pos == 0 || pos == 2) {
+                database.push().setValue(Check(
                         field_check_name.text.toString(),
-                        if (pos == 0) CheckModel.CheckType.Cash
-                        else CheckModel.CheckType.Card,
+                        if (pos == 0) Check.CheckType.Cash
+                        else Check.CheckType.Card,
                         balance = balance.toDouble()
-                    ))
-                    App.userData?.getChecks(this) { finish() }
-                }
-                else {
-                    val number = field_check_number.text.toString()
-                    database.push().setValue(CheckModel(
+                ))
+                App.userData?.getChecks(this) { finish() }
+            }
+            else {
+                val number = field_check_number.text.toString()
+                database.push().setValue(Check(
                         field_check_name.text.toString(),
-                        CheckModel.CheckType.SberCard,
+                        Check.CheckType.SberCard,
                         if (number.isNotBlank() && number.length == 4) number else null,
                         balance.toDouble(),
                         checkbox_check_import.isChecked
-                    ))
-                    App.userData?.getChecks(this) { finish() }
-                }
+                ))
+                App.userData?.getChecks(this) { finish() }
             }
-            else App.errorAlert(getString(R.string.error_incorrect_input), this)
         }
-        else App.errorAlert(getString(R.string.error_empty_field), this)
-
+        else App.errorAlert(checkResp.message, this)
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkData(name: String, balance: String): DataCheckResponse {
+        if (name.isBlank() || balance.isBlank())
+            return DataCheckResponse(false, getString(R.string.error_empty_field))
+        if (balance.toDoubleOrNull() == null)
+            return DataCheckResponse(false, getString(R.string.error_incorrect_input))
+        return DataCheckResponse(true, "OK")
     }
 }

@@ -1,6 +1,6 @@
 package com.hfad.moneymanager.models
 
-data class TransactionModel (
+data class Transaction (
         val card: String,
         val time: String,
         val amount: Double,

@@ -10,7 +10,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
-import com.hfad.moneymanager.models.DebtModel
+import com.hfad.moneymanager.models.DataCheckResponse
+import com.hfad.moneymanager.models.Debt
 import kotlinx.android.synthetic.main.activity_add_debt.*
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.parser.UnderscoreDigitSlotsParser
@@ -43,19 +44,24 @@ class AddDebtActivity : AppCompatActivity() {
         val pos = spinner_debt_type.selectedItemPosition
         val date = field_debt_date.text.toString()
 
-        if (person.isNotBlank() && amount.isNotBlank()) {
-            if (amount.toDoubleOrNull() != null && (date.length == 10 || date.isEmpty())) {
-                database.push().setValue(DebtModel(
+        val checkResp = checkData(person, amount, date)
+        if (checkResp.isSuccessful) {
+            database.push().setValue(Debt(
                     amount.toDouble(), person,
-                    if (pos == 0) DebtModel.DebtType.fromMe else DebtModel.DebtType.toMe,
+                    if (pos == 0) Debt.DebtType.fromMe else Debt.DebtType.toMe,
                     if (date.isNotBlank()) date else null
-                ))
-                App.userData?.getDebts(this) { finish() }
-            }
-            else App.errorAlert(getString(R.string.error_incorrect_input), this)
+            ))
+            App.userData?.getDebts(this) { finish() }
         }
-        else App.errorAlert(getString(R.string.error_empty_field), this)
-
+        else App.errorAlert(checkResp.message, this)
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun checkData(person: String, amount: String, date: String): DataCheckResponse {
+        if (person.isBlank() || amount.isBlank())
+            return DataCheckResponse(false, getString(R.string.error_empty_field))
+        if (amount.toDoubleOrNull() == null || (date.length != 10 && date.isNotBlank()))
+            return DataCheckResponse(false, getString(R.string.error_incorrect_input))
+        return DataCheckResponse(true, "OK")
     }
 }

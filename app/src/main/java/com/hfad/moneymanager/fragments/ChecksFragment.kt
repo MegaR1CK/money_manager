@@ -13,7 +13,7 @@ import com.hfad.moneymanager.activities.AddCheckActivity
 import com.hfad.moneymanager.activities.AddDebtActivity
 import com.hfad.moneymanager.adapters.ChecksAdapter
 import com.hfad.moneymanager.adapters.DebtAdapter
-import com.hfad.moneymanager.models.DebtModel
+import com.hfad.moneymanager.models.Debt
 import kotlinx.android.synthetic.main.fragment_checks.*
 import kotlinx.android.synthetic.main.fragment_checks.view.*
 
@@ -54,10 +54,10 @@ class ChecksFragment : Fragment() {
                 recycler_debts.adapter = App.userData?.debts?.let { DebtAdapter(it) }
                 debts_sum.text = String.format(getString(R.string.debt_amount),
                     App.userData?.debts
-                        ?.filter { it.type == DebtModel.DebtType.toMe }
+                        ?.filter { it.type == Debt.DebtType.toMe }
                         ?.sumOf { it.amount },
                     App.userData?.debts
-                        ?.filter { it.type == DebtModel.DebtType.fromMe }
+                        ?.filter { it.type == Debt.DebtType.fromMe }
                         ?.sumOf { it.amount })
             }
             else no_debts_title.visibility = View.VISIBLE

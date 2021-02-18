@@ -5,11 +5,11 @@ import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.hfad.moneymanager.R
-import com.hfad.moneymanager.models.CheckModel
-import com.hfad.moneymanager.models.CheckModel.CheckType
+import com.hfad.moneymanager.models.Check
+import com.hfad.moneymanager.models.Check.CheckType
 import kotlinx.android.synthetic.main.item_check.view.*
 
-class ChecksAdapter (private val checks: List<CheckModel>)
+class ChecksAdapter (private val checks: List<Check>)
     : RecyclerView.Adapter<ChecksAdapter.CheckHolder>() {
 
     inner class CheckHolder (val container: ConstraintLayout) : RecyclerView.ViewHolder(container)
