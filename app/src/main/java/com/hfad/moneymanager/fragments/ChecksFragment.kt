@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.moneymanager.App
@@ -60,6 +61,7 @@ class ChecksFragment : Fragment() {
                     App.userData?.debts
                         ?.filter { it.type == Debt.DebtType.fromMe }
                         ?.sumOf { it.amount })
+                swipe_refresh_checks.isRefreshing = false
             }
             else no_debts_title.visibility = View.VISIBLE
         }
@@ -69,6 +71,12 @@ class ChecksFragment : Fragment() {
         else {
             setChecksRecycler.invoke()
             setDebtsRecycler.invoke()
+        }
+
+        activity?.let { ContextCompat.getColor(it, R.color.dark_blue) }
+            ?.let { swipe_refresh_checks.setColorSchemeColors(it) }
+        swipe_refresh_checks.setOnRefreshListener {
+            activity?.let { App.userData?.initUserData(it, setChecksRecycler, setDebtsRecycler) }
         }
     }
 }

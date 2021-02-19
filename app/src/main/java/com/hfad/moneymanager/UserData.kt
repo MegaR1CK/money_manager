@@ -22,11 +22,12 @@ class UserData {
     var transactions: MutableList<Transaction>? = null
     var categories: MutableMap<String, List<String>>? = null
 
-    fun initUserData(context: Context, checksOperation: () -> Unit, debtOperation: () -> Unit) {
+    fun initUserData(context: Context, operation1: (() -> Unit)? = null,
+                     operation2: (() -> Unit)? = null) {
         val getLastTransactions = {
             getLastTransactions(context) {
-                getChecks(context) { checksOperation.invoke() }
-                getDebts(context) { debtOperation.invoke() }
+                getChecks(context) { operation1?.invoke() }
+                getDebts(context) { operation2?.invoke() }
             }
         }
         val getTransactions = { getTransactions(context) { getLastTransactions.invoke() } }
