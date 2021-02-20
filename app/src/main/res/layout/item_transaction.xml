@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="10dp"
-    android:paddingBottom="10dp">
+    android:paddingBottom="10dp"
+    android:background="?attr/selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/transaction_icon"
@@ -31,7 +34,6 @@
         android:id="@+id/transaction_dest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/transaction_category"
         app:layout_constraintTop_toBottomOf="@+id/transaction_category" />
@@ -40,7 +42,6 @@
         android:id="@+id/transaction_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="@+id/transaction_dest"
         app:layout_constraintTop_toBottomOf="@+id/transaction_dest" />

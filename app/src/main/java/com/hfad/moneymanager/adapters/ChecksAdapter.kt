@@ -23,7 +23,6 @@ class ChecksAdapter (private val checks: List<Check>, private var transactions: 
     override fun onBindViewHolder(holder: CheckHolder, position: Int) {
         val view = holder.container
         val check = checks[position]
-        // Не протестировано
         if (check.type == CheckType.SberCard && check.allowImport) {
             transactions = transactions.filter { it.card == check.number }
             view.check_balance.text = String.format(view.context.getString(R.string.amount),
@@ -37,7 +36,16 @@ class ChecksAdapter (private val checks: List<Check>, private var transactions: 
             CheckType.Card -> R.drawable.card_logo
             CheckType.Cash -> R.drawable.cash_logo
         })
+        view.setOnClickListener {
+            onCheckClickListener.onCheckClick(position)
+        }
     }
 
     override fun getItemCount() = checks.size
+
+    lateinit var onCheckClickListener: CheckClickListener
+
+    interface CheckClickListener {
+        fun onCheckClick(position: Int)
+    }
 }

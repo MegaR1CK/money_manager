@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/check_act_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="never"
+    tools:context=".activities.CheckActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:paddingStart="15dp"
+        android:paddingTop="20dp"
+        android:paddingEnd="15dp">
+
+        <ImageView
+            android:id="@+id/check_act_logo"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/sber_logo" />
+
+        <TextView
+            android:id="@+id/check_act_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="@string/sber_card_title"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/check_act_logo"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/check_act_balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="@string/amount_filler"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/check_act_logo"
+            app:layout_constraintStart_toStartOf="@+id/check_act_name" />
+
+        <TextView
+            android:id="@+id/check_act_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/check_act_balance"
+            app:layout_constraintStart_toStartOf="@+id/check_act_name"
+            app:layout_constraintTop_toBottomOf="@+id/check_act_name" />
+
+        <ImageButton
+            android:id="@+id/btn_check_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background_field"
+            android:padding="7dp"
+            android:src="@drawable/baseline_delete_24"
+            android:tint="@color/dark_blue"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/btn_check_rename"
+            app:layout_constraintTop_toBottomOf="@+id/check_act_logo" />
+
+        <ImageButton
+            android:id="@+id/btn_check_rename"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/background_field"
+            android:padding="7dp"
+            android:src="@drawable/baseline_drive_file_rename_outline_24"
+            android:tint="@color/dark_blue"
+            app:layout_constraintEnd_toStartOf="@+id/btn_check_delete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_act_logo" />
+
+        <TextView
+            android:id="@+id/check_stats_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/check_stats_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_check_rename" />
+
+        <TextView
+            android:id="@+id/check_incomes_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="@string/incomes_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
+
+        <TextView
+            android:id="@+id/check_thread_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/thread_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/check_expenses_title"
+            app:layout_constraintStart_toEndOf="@+id/check_incomes_title"
+            app:layout_constraintTop_toBottomOf="@+id/check_stats_title" />
+
+        <TextView
+            android:id="@+id/check_expenses_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:text="@string/expenses_title"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
+
+
+        <TextView
+            android:id="@+id/check_incomes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/amount_filler"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/check_incomes_title"
+            app:layout_constraintTop_toBottomOf="@+id/check_incomes_title" />
+
+        <TextView
+            android:id="@+id/check_thread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/amount_filler"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toStartOf="@+id/check_expenses"
+            app:layout_constraintStart_toEndOf="@+id/check_incomes"
+            app:layout_constraintTop_toBottomOf="@+id/check_thread_title" />
+
+        <TextView
+            android:id="@+id/check_expenses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/amount_filler"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/check_expenses_title"
+            app:layout_constraintTop_toBottomOf="@+id/check_expenses_title" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_check_history"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="40dp"
+            android:nestedScrollingEnabled="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/check_thread" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

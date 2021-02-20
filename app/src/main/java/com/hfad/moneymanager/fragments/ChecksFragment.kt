@@ -12,6 +12,7 @@ import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.activities.AddCheckActivity
 import com.hfad.moneymanager.activities.AddDebtActivity
+import com.hfad.moneymanager.activities.CheckActivity
 import com.hfad.moneymanager.adapters.ChecksAdapter
 import com.hfad.moneymanager.adapters.DebtAdapter
 import com.hfad.moneymanager.models.Debt
@@ -44,8 +45,16 @@ class ChecksFragment : Fragment() {
         val setChecksRecycler = {
             if (App.userData?.checks?.isNotEmpty() == true) {
                 recycler_checks.layoutManager = LinearLayoutManager(activity)
-                recycler_checks.adapter = App.userData?.checks
-                        ?.let { App.userData?.transactions?.let { it1 -> ChecksAdapter(it, it1) } }
+                val adapter = ChecksAdapter(
+                    App.userData?.checks ?: listOf(),
+                    App.userData?.transactions ?: listOf())
+                adapter.onCheckClickListener = object : ChecksAdapter.CheckClickListener {
+                    override fun onCheckClick(position: Int) {
+                        startActivity(Intent(activity, CheckActivity::class.java)
+                            .putExtra(CheckActivity.CHECK_POS, position))
+                    }
+                }
+                recycler_checks.adapter = adapter
             }
             else no_checks_title.visibility = View.VISIBLE
         }

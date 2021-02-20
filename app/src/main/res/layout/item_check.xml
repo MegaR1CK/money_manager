@@ -7,7 +7,10 @@
     android:paddingTop="10dp"
     android:paddingBottom="10dp"
     android:paddingStart="10dp"
-    android:paddingEnd="10dp">
+    android:paddingEnd="10dp"
+    android:background="?attr/selectableItemBackground"
+    android:focusable="true"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/check_logo"

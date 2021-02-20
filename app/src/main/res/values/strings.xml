@@ -71,6 +71,7 @@
         <item>Мне должны</item>
     </string-array>
     <string name="expense_amount">- %1$.2f ₽</string>
+    <string name="income_amount">+ %1$.2f ₽</string>
     <string name="cat_food">Еда и рестораны</string>
     <string name="cat_fun">Развлечения</string>
     <string name="cat_products">Продукты</string>
@@ -79,4 +80,8 @@
     <string name="cat_unknown">Без категории</string>
     <string name="date_today">Сегодня</string>
     <string name="date_yesterday">Вчера</string>
+    <string name="check_stats_title">Статистика за текущий месяц</string>
+    <string name="incomes_title">Доход</string>
+    <string name="expenses_title">Расход</string>
+    <string name="thread_title">Денежный поток</string>
 </resources>
