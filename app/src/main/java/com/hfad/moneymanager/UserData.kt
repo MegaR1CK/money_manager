@@ -24,16 +24,12 @@ class UserData {
 
     fun initUserData(context: Context, operation1: (() -> Unit)? = null,
                      operation2: (() -> Unit)? = null) {
-        val getLastTransactions = {
-            getLastTransactions(context) {
-                getChecks(context) { operation1?.invoke() }
-                getDebts(context) { operation2?.invoke() }
-            }
-        }
+        val getLastTransactions = { getLastTransactions(context) { operation1?.invoke() } }
         val getTransactions = { getTransactions(context) { getLastTransactions.invoke() } }
 
         getTransactionCategories(context) {
-            getTransactions.invoke()
+            getChecks(context) { getTransactions.invoke() }
+            getDebts(context) { operation2?.invoke() }
         }
     }
 

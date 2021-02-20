@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:overScrollMode="never"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:id="@+id/scroll_checks_frag">
 
         <LinearLayout
             android:layout_width="match_parent"

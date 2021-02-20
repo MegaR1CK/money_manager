@@ -41,7 +41,7 @@ class ChecksFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-
+        scroll_checks_frag.scrollTo(0,0)
         val setChecksRecycler = {
             if (App.userData?.checks?.isNotEmpty() == true) {
                 recycler_checks.layoutManager = LinearLayoutManager(activity)
@@ -55,6 +55,7 @@ class ChecksFragment : Fragment() {
                     }
                 }
                 recycler_checks.adapter = adapter
+                swipe_refresh_checks.isRefreshing = false
             }
             else no_checks_title.visibility = View.VISIBLE
         }
@@ -70,7 +71,6 @@ class ChecksFragment : Fragment() {
                     App.userData?.debts
                         ?.filter { it.type == Debt.DebtType.fromMe }
                         ?.sumOf { it.amount })
-                swipe_refresh_checks.isRefreshing = false
             }
             else no_debts_title.visibility = View.VISIBLE
         }
