@@ -45,10 +45,11 @@ class UserData {
         val smsManager = categories?.let { SMSManager(context, it) }
 
         database.child("lastCheckTime").get()
-            .addOnSuccessListener {
+            .addOnSuccessListener { it ->
                 val lastCheckTime = it.getValue<Long>() ?: Date().time
+                val importChecks = checks?.filter { it.allowImport }?.map { it.number ?: ""}
                 val lastTransactions = smsManager
-                    ?.getSmsTransactions(range = LongRange(lastCheckTime, Date().time))
+                    ?.getSmsTransactions(importChecks, LongRange(lastCheckTime, Date().time))
                 lastTransactions?.forEach { transaction ->
                     database.child("transactions").push().setValue(transaction)
                 }

@@ -83,95 +83,103 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/check_act_logo" />
 
-        <TextView
-            android:id="@+id/check_stats_title"
-            android:layout_width="wrap_content"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/check_stats_layout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/check_stats_title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_check_rename" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_check_rename">
 
-        <TextView
-            android:id="@+id/check_incomes_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:text="@string/incomes_title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
+            <TextView
+                android:id="@+id/check_stats_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_stats_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/check_thread_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/thread_title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/check_expenses_title"
-            app:layout_constraintStart_toEndOf="@+id/check_incomes_title"
-            app:layout_constraintTop_toBottomOf="@+id/check_stats_title" />
+            <TextView
+                android:id="@+id/check_incomes_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:text="@string/incomes_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
 
-        <TextView
-            android:id="@+id/check_expenses_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="10dp"
-            android:text="@string/expenses_title"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
+            <TextView
+                android:id="@+id/check_thread_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/thread_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/check_expenses_title"
+                app:layout_constraintStart_toEndOf="@+id/check_incomes_title"
+                app:layout_constraintTop_toBottomOf="@+id/check_stats_title" />
+
+            <TextView
+                android:id="@+id/check_expenses_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="@string/expenses_title"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/check_thread_title" />
 
 
-        <TextView
-            android:id="@+id/check_incomes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/amount_filler"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="@+id/check_incomes_title"
-            app:layout_constraintTop_toBottomOf="@+id/check_incomes_title" />
+            <TextView
+                android:id="@+id/check_incomes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/amount_filler"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="@+id/check_incomes_title"
+                app:layout_constraintTop_toBottomOf="@+id/check_incomes_title" />
 
-        <TextView
-            android:id="@+id/check_thread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/amount_filler"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toStartOf="@+id/check_expenses"
-            app:layout_constraintStart_toEndOf="@+id/check_incomes"
-            app:layout_constraintTop_toBottomOf="@+id/check_thread_title" />
+            <TextView
+                android:id="@+id/check_thread"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/amount_filler"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toStartOf="@+id/check_expenses"
+                app:layout_constraintStart_toEndOf="@+id/check_incomes"
+                app:layout_constraintTop_toBottomOf="@+id/check_thread_title" />
 
-        <TextView
-            android:id="@+id/check_expenses"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/amount_filler"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="@+id/check_expenses_title"
-            app:layout_constraintTop_toBottomOf="@+id/check_expenses_title" />
+            <TextView
+                android:id="@+id/check_expenses"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/amount_filler"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="@+id/check_expenses_title"
+                app:layout_constraintTop_toBottomOf="@+id/check_expenses_title" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_check_history"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="40dp"
             android:nestedScrollingEnabled="false"
+            android:layout_marginTop="40dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/check_thread" />
+            app:layout_constraintTop_toBottomOf="@+id/check_stats_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

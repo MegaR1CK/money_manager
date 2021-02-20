@@ -1,26 +1,35 @@
 package com.hfad.moneymanager.activities
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ScrollView
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.adapters.TransactionsAdapter
 import com.hfad.moneymanager.models.Check
 import kotlinx.android.synthetic.main.activity_check.*
-import kotlinx.android.synthetic.main.item_check.view.*
 import kotlin.math.abs
 
 class CheckActivity : AppCompatActivity() {
 
     companion object { const val CHECK_POS = "check_pos" }
 
+    val database = Firebase.database.reference
+            .child("users")
+            .child(Firebase.auth.currentUser?.uid ?: "")
+            .child("checks")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check)
         //TODO: checknumber для всех
+        //TODO: виды транзакций
         val check = intent?.extras?.getInt(CHECK_POS)?.let { App.userData?.checks?.get(it) }
         check_act_name.text = check?.name
         check_act_balance.text = String.format(getString(R.string.amount), check?.balance)
@@ -57,10 +66,23 @@ class CheckActivity : AppCompatActivity() {
         recycler_check_history.adapter = App.userData?.transactions
             ?.filter { it.card == check?.number }
             ?.let { TransactionsAdapter(it) }
-    }
 
-    override fun onResume() {
-        super.onResume()
-        check_act_scroll.scrollTo(0,0)
+        btn_check_delete.setOnClickListener {
+            AlertDialog.Builder(this)
+                    .setTitle(R.string.check_delete_title)
+                    .setMessage(R.string.check_delete_desc)
+                    .setPositiveButton(R.string.yes) { _: DialogInterface, _: Int ->
+                        database.child(check?.id ?: "").removeValue()
+                                .addOnSuccessListener {
+                                    App.userData?.getChecks(this) { finish() }
+                                }
+                                .addOnFailureListener {
+                                    it.message?.let { it1 -> App.errorAlert(it1, this) }
+                                }
+                    }
+                    .setNegativeButton(R.string.cancel, null)
+                    .create()
+                    .show()
+        }
     }
 }

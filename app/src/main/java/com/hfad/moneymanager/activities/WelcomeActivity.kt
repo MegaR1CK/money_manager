@@ -82,7 +82,9 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             if (checkbox_cash.isChecked) {
-                databaseUser.child("checks").push().setValue(Check(
+                val newRef = databaseUser.child("checks").push()
+                newRef.setValue(Check(
+                        newRef.key ?: "",
                         getString(R.string.cash_title),
                         CheckType.Cash, null,
                         field_cash_start_amount.text.toString().toDoubleOrNull() ?: 0.0
@@ -93,11 +95,14 @@ class WelcomeActivity : AppCompatActivity() {
                 val number = field_card_number.text.toString()
                 if ((number.isNotBlank() && number.length == 4) || number.isBlank()) {
                     transactions = transactions?.filter { it.card == number }
-                    databaseUser.child("checks").push().setValue(Check(
-                        getString(R.string.sber_card_title), CheckType.SberCard,
-                        if (number.isBlank()) null else number,
-                        transactions?.first()?.balance ?: 0.0,
-                        checkbox_import.isChecked
+                    val newRef = databaseUser.child("checks").push()
+                    newRef.setValue(Check(
+                            newRef.key ?: "",
+                            getString(R.string.sber_card_title),
+                            CheckType.SberCard,
+                            if (number.isBlank()) null else number,
+                            transactions?.first()?.balance ?: 0.0,
+                            checkbox_import.isChecked
                     ))
                     transactions?.let {
                         databaseUser
@@ -112,7 +117,9 @@ class WelcomeActivity : AppCompatActivity() {
             }
 
             if (checkbox_card.isChecked && spinner_card_type.selectedItemPosition == 1) {
-                databaseUser.child("checks").push().setValue(Check(
+                val newRef = databaseUser.child("checks").push()
+                newRef.setValue(Check(
+                        newRef.key ?: "",
                         getString(R.string.card_title), CheckType.Card, null,
                         field_card_start_amount.text.toString().toDoubleOrNull() ?: 0.0
                 ))

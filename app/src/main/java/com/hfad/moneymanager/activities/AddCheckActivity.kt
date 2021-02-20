@@ -57,7 +57,9 @@ class AddCheckActivity : AppCompatActivity() {
         if (checkResp.isSuccessful) {
             val pos = spinner_check_type.selectedItemPosition
             if (pos == 0 || pos == 2) {
-                database.push().setValue(Check(
+                val newRef = database.push()
+                newRef.setValue(Check(
+                        newRef.key ?: "",
                         field_check_name.text.toString(),
                         if (pos == 0) Check.CheckType.Cash
                         else Check.CheckType.Card,
@@ -67,7 +69,9 @@ class AddCheckActivity : AppCompatActivity() {
             }
             else {
                 val number = field_check_number.text.toString()
-                database.push().setValue(Check(
+                val newRef = database.push()
+                newRef.setValue(Check(
+                        newRef.key ?: "",
                         field_check_name.text.toString(),
                         Check.CheckType.SberCard,
                         if (number.isNotBlank() && number.length == 4) number else null,

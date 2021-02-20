@@ -84,4 +84,6 @@
     <string name="incomes_title">Доход</string>
     <string name="expenses_title">Расход</string>
     <string name="thread_title">Денежный поток</string>
+    <string name="check_delete_title">Удаление счета</string>
+    <string name="check_delete_desc">Вы уверены, что хотите удалить этот счет?</string>
 </resources>
