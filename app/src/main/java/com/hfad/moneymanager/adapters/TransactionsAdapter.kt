@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.models.Transaction
+import com.hfad.moneymanager.models.Transaction.TransactionType
 import kotlinx.android.synthetic.main.item_transaction.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -27,13 +28,13 @@ class TransactionsAdapter (private val transactions: List<Transaction>) :
         val view = holder.container
         val transaction = transactions[position]
         val context = view.context
-        view.transaction_category.text = transaction.category ?:
-        context.getString(R.string.cat_unknown)
+        view.transaction_category.text = transaction.category ?: context.getString(R.string.cat_unknown)
         view.transaction_dest.text = transaction.dest
-        view.transaction_check.text =
-            App.userData?.checks?.find { it.number == transaction.card }?.name
+        view.transaction_check.text = App.userData?.checks?.find { it.number == transaction.card }?.name
         view.transaction_amount.text =
-            String.format(context.getString(R.string.expense_amount), transaction.amount)
+                if (transaction.type == TransactionType.TransferToUser)
+                    String.format(context.getString(R.string.income_amount), transaction.amount)
+                else String.format(context.getString(R.string.expense_amount), transaction.amount)
         view.transaction_date.text = dateConverter(transaction.date, context)
         view.transaction_icon.setImageResource(when (transaction.category) {
             context.getString(R.string.cat_food) -> R.drawable.icon_cat_food
@@ -41,6 +42,7 @@ class TransactionsAdapter (private val transactions: List<Transaction>) :
             context.getString(R.string.cat_products) -> R.drawable.icon_cat_products
             context.getString(R.string.cat_purchases) -> R.drawable.icon_cat_purchases
             context.getString(R.string.cat_transport) -> R.drawable.icon_cat_transport
+            context.getString(R.string.cat_transfer) -> R.drawable.baseline_swap_horiz_24
             else -> R.drawable.icon_cat_unknown
         })
     }

@@ -16,8 +16,12 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
     fun getSmsTransactions(numbers: List<String>? = null, range: LongRange? = null): List<Transaction> {
         var smsList = getSMSList()
         var transactions = mutableListOf<Transaction>()
-        val regex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
-        val pattern = Pattern.compile(regex)
+
+        val purchaseRegex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
+        val purchasePattern = Pattern.compile(purchaseRegex)
+
+        val transferToUserRegex = "Перевод (\\d+)р от (.+) Баланс ECMC(\\d{4}): (\\d+.\\d+)р"
+        val transferToUserPattern = Pattern.compile(transferToUserRegex)
 
         val currentCalendar = Calendar.getInstance(TimeZone.getDefault())
         val smsCalendar = Calendar.getInstance(TimeZone.getDefault())
@@ -26,25 +30,43 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
             currentCalendar.timeInMillis = Date().time
             smsCalendar.timeInMillis = it.date?.toLong() ?: 0
             val difference = currentCalendar.get(Calendar.MONTH) - smsCalendar.get(Calendar.MONTH)
-            it.address == "900" && it.body?.matches(Regex(regex)) == true &&
-                    (difference in 0..1 || difference == -11)
+            it.address == "900" && (difference in 0..1 || difference == -11) &&
+                    (it.body?.matches(Regex(purchaseRegex)) == true ||
+                            it.body?.matches(Regex(transferToUserRegex)) == true)
         }
 
         smsList.forEach { sms ->
-            val matcher = pattern.matcher(sms.body as CharSequence)
-            matcher.find()
             val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-            transactions.add(
-                    Transaction(
-                            matcher.group(1) ?: "nf",
-                            matcher.group(2) ?: "nf",
-                            sms.date?.toLong() ?: 0,
-                            matcher.group(3)?.toDoubleOrNull() ?: 0.0,
-                            matcher.group(4) ?: "nf",
-                            matcher.group(5)?.toDoubleOrNull() ?: 0.0,
-                            sdf.format(Date(sms.date?.toLong() ?: 1L))
-                    )
-            )
+            if (sms.body?.matches(Regex(purchaseRegex)) == true) {
+                val matcher = purchasePattern.matcher(sms.body as CharSequence)
+                matcher.find()
+                transactions.add(
+                        Transaction(
+                                matcher.group(1) ?: "nf",
+                                sms.date?.toLong() ?: 0,
+                                matcher.group(3)?.toDoubleOrNull() ?: 0.0,
+                                matcher.group(4) ?: "nf",
+                                matcher.group(5)?.toDoubleOrNull() ?: 0.0,
+                                sdf.format(Date(sms.date?.toLong() ?: 1L)),
+                                Transaction.TransactionType.Purchase
+                        )
+                )
+            }
+            else if (sms.body?.matches(Regex(transferToUserRegex)) == true) {
+                val matcher = transferToUserPattern.matcher(sms.body as CharSequence)
+                matcher.find()
+                transactions.add(
+                        Transaction(
+                                matcher.group(3) ?: "nf",
+                                sms.date?.toLong() ?: 0,
+                                matcher.group(1)?.toDoubleOrNull() ?: 0.0,
+                                matcher.group(2) ?: "nf",
+                                matcher.group(4)?.toDoubleOrNull() ?: 0.0,
+                                sdf.format(Date(sms.date?.toLong() ?: 1L)),
+                                Transaction.TransactionType.TransferToUser
+                        )
+                )
+            }
         }
         if (numbers != null)
             transactions = transactions.filter { numbers.contains(it.card) }.toMutableList()
@@ -75,10 +97,14 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
     }
 
     private fun setCategories(transactions: List<Transaction>): List<Transaction> {
-        transactions.forEach lit@{ model ->
+        transactions.forEach lit@{ transaction ->
+            if (transaction.type == Transaction.TransactionType.TransferToUser) {
+                transaction.category = context.getString(R.string.cat_transfer)
+                return@lit
+            }
             categories.forEach { category ->
-                if (category.value.contains(model.dest)) {
-                    model.category = category.key
+                if (category.value.contains(transaction.dest)) {
+                    transaction.category = category.key
                     return@lit
                 }
             }

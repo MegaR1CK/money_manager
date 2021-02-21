@@ -77,6 +77,8 @@
     <string name="cat_products">Продукты</string>
     <string name="cat_purchases">Покупки</string>
     <string name="cat_transport">Проезд</string>
+    <string name="cat_transfer">Перевод</string>
+    <string name="cat_payment">Оплата услуг</string>
     <string name="cat_unknown">Без категории</string>
     <string name="date_today">Сегодня</string>
     <string name="date_yesterday">Вчера</string>

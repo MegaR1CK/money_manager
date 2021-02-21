@@ -13,6 +13,8 @@ import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.adapters.TransactionsAdapter
 import com.hfad.moneymanager.models.Check
+import com.hfad.moneymanager.models.Transaction
+import com.hfad.moneymanager.models.Transaction.TransactionType
 import kotlinx.android.synthetic.main.activity_check.*
 import kotlin.math.abs
 
@@ -28,7 +30,6 @@ class CheckActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check)
-        //TODO: checknumber для всех
         //TODO: виды транзакций
         val check = intent?.extras?.getInt(CHECK_POS)?.let { App.userData?.checks?.get(it) }
         check_act_name.text = check?.name
@@ -41,13 +42,15 @@ class CheckActivity : AppCompatActivity() {
             else -> R.drawable.icon_cat_unknown
         })
 
-        val incomes = 0.0
+        val incomes = App.userData?.transactions
+                ?.filter { it.card == check?.number && it.type == TransactionType.TransferToUser }
+                ?.sumOf { it.amount }
         check_incomes.text = String.format(getString(R.string.amount), incomes)
         val expenses = App.userData?.transactions
-            ?.filter { it.card == check?.number }
-            ?.sumOf { it.amount }
+                ?.filter { it.card == check?.number && it.type != TransactionType.TransferToUser }
+                ?.sumOf { it.amount }
         check_expenses.text = String.format(getString(R.string.amount), expenses)
-        val thread = incomes - (expenses ?: 0.0)
+        val thread = incomes?.minus((expenses ?: 0.0)) ?: 0.0
         when {
             thread > 0 -> {
                 check_thread.text = String.format(getString(R.string.income_amount), thread)
