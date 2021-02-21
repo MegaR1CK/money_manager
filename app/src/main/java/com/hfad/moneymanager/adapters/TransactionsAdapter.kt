@@ -43,6 +43,7 @@ class TransactionsAdapter (private val transactions: List<Transaction>) :
             context.getString(R.string.cat_purchases) -> R.drawable.icon_cat_purchases
             context.getString(R.string.cat_transport) -> R.drawable.icon_cat_transport
             context.getString(R.string.cat_transfer) -> R.drawable.baseline_swap_horiz_24
+            context.getString(R.string.cat_payment) -> R.drawable.icon_cat_payment
             else -> R.drawable.icon_cat_unknown
         })
     }
