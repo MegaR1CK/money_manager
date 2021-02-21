@@ -32,7 +32,7 @@ class TransactionsAdapter (private val transactions: List<Transaction>) :
         view.transaction_dest.text = transaction.dest
         view.transaction_check.text = App.userData?.checks?.find { it.number == transaction.card }?.name
         view.transaction_amount.text =
-                if (transaction.type == TransactionType.TransferToUser)
+                if (transaction.type == TransactionType.Income)
                     String.format(context.getString(R.string.income_amount), transaction.amount)
                 else String.format(context.getString(R.string.expense_amount), transaction.amount)
         view.transaction_date.text = dateConverter(transaction.date, context)

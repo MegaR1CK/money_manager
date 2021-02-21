@@ -11,6 +11,6 @@ data class Transaction (
         var category: String? = null) {
 
     enum class TransactionType {
-        Purchase, TransferFromUser, TransferToUser, Payment
+        Income, Expense
     }
 }

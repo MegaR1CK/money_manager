@@ -9,6 +9,7 @@ import com.hfad.moneymanager.models.SMS
 import com.hfad.moneymanager.models.Transaction
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 class SMSManager (val context: Context, private val categories: MutableMap<String, List<String>>) {
@@ -26,6 +27,9 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
         val paymentRegex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Оплата (\\d+|\\d+.\\d+)р Баланс: (\\d+.\\d+)р"
         val paymentPattern = Pattern.compile(paymentRegex)
 
+        val transferFromUserRegex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) перевод (\\d+|\\d+.\\d+)р Баланс: (\\d+.\\d+)р"
+        val transferFromUserPattern = Pattern.compile(transferFromUserRegex)
+
         val currentCalendar = Calendar.getInstance(TimeZone.getDefault())
         val smsCalendar = Calendar.getInstance(TimeZone.getDefault())
 
@@ -36,35 +40,47 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
             it.address == "900" && (difference in 0..1 || difference == -11) &&
                     (it.body?.matches(Regex(purchaseRegex)) == true ||
                             it.body?.matches(Regex(transferToUserRegex)) == true ||
-                            it.body?.matches(Regex(paymentRegex)) == true)
+                            it.body?.matches(Regex(paymentRegex)) == true ||
+                            it.body?.matches(Regex(transferFromUserRegex)) == true)
         }
 
         smsList.forEach { sms ->
             val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
-            if (sms.body?.matches(Regex(purchaseRegex)) == true ||
-                    sms.body?.matches(Regex(paymentRegex)) == true) {
-                val matcher = if (sms.body.matches(Regex(purchaseRegex)))
-                    purchasePattern.matcher(sms.body as CharSequence)
-                else paymentPattern.matcher(sms.body as CharSequence)
-                matcher.find()
+            if (sms.body?.matches(Regex(transferToUserRegex)) == false) {
+                val matcher = when {
+                    sms.body.matches(Regex(purchaseRegex)) ->
+                        purchasePattern.matcher(sms.body as CharSequence)
+                    sms.body.matches(Regex(paymentRegex)) ->
+                        paymentPattern.matcher(sms.body as CharSequence)
+                    sms.body.matches(Regex(transferFromUserRegex)) ->
+                        transferFromUserPattern.matcher(sms.body as CharSequence)
+                    else -> null
+                }
+                matcher?.find()
                 transactions.add(
                         Transaction(
-                                matcher.group(1) ?: "",
+                                matcher?.group(1) ?: "",
                                 sms.date?.toLong() ?: 0,
-                                matcher.group(3)?.toDoubleOrNull() ?: 0.0,
-                                if (sms.body.matches(Regex(paymentRegex)))  ""
-                                else matcher.group(4),
-                                if (sms.body.matches(Regex(paymentRegex)))
-                                    matcher.group(4)?.toDoubleOrNull() ?: 0.0
-                                else matcher.group(5)?.toDoubleOrNull() ?: 0.0,
-                                sdf.format(Date(sms.date?.toLong() ?: 1L)),
+                                matcher?.group(3)?.toDoubleOrNull() ?: 0.0,
                                 if (sms.body.matches(Regex(purchaseRegex)))
-                                    Transaction.TransactionType.Purchase
-                                else Transaction.TransactionType.Payment
+                                    matcher?.group(4) ?: ""
+                                else  "",
+                                if (sms.body.matches(Regex(purchaseRegex)))
+                                    matcher?.group(5)?.toDoubleOrNull() ?: 0.0
+                                else matcher?.group(4)?.toDoubleOrNull() ?: 0.0,
+                                sdf.format(Date(sms.date?.toLong() ?: 1L)),
+                                Transaction.TransactionType.Expense,
+                                when {
+                                    sms.body.matches(Regex(paymentRegex)) ->
+                                        context.getString(R.string.cat_payment)
+                                    sms.body.matches(Regex(transferFromUserRegex)) ->
+                                        context.getString(R.string.cat_transfer)
+                                    else -> null
+                                }
                         )
                 )
             }
-            else if (sms.body?.matches(Regex(transferToUserRegex)) == true) {
+            else {
                 val matcher = transferToUserPattern.matcher(sms.body as CharSequence)
                 matcher.find()
                 transactions.add(
@@ -75,7 +91,8 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
                                 matcher.group(2) ?: "",
                                 matcher.group(4)?.toDoubleOrNull() ?: 0.0,
                                 sdf.format(Date(sms.date?.toLong() ?: 1L)),
-                                Transaction.TransactionType.TransferToUser
+                                Transaction.TransactionType.Income,
+                                context.getString(R.string.cat_transfer)
                         )
                 )
             }
@@ -110,14 +127,7 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
 
     private fun setCategories(transactions: List<Transaction>): List<Transaction> {
         transactions.forEach lit@{ transaction ->
-            if (transaction.type == Transaction.TransactionType.TransferToUser) {
-                transaction.category = context.getString(R.string.cat_transfer)
-                return@lit
-            }
-            if (transaction.type == Transaction.TransactionType.Payment) {
-                transaction.category = context.getString(R.string.cat_payment)
-                return@lit
-            }
+            if (transaction.category != null) return@lit
             categories.forEach { category ->
                 if (category.value.contains(transaction.dest)) {
                     transaction.category = category.key

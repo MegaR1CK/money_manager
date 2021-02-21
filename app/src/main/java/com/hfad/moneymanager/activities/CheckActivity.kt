@@ -43,11 +43,11 @@ class CheckActivity : AppCompatActivity() {
         })
 
         val incomes = App.userData?.transactions
-                ?.filter { it.card == check?.number && it.type == TransactionType.TransferToUser }
+                ?.filter { it.card == check?.number && it.type == TransactionType.Income }
                 ?.sumOf { it.amount }
         check_incomes.text = String.format(getString(R.string.amount), incomes)
         val expenses = App.userData?.transactions
-                ?.filter { it.card == check?.number && it.type != TransactionType.TransferToUser }
+                ?.filter { it.card == check?.number && it.type == TransactionType.Expense }
                 ?.sumOf { it.amount }
         check_expenses.text = String.format(getString(R.string.amount), expenses)
         val thread = incomes?.minus((expenses ?: 0.0)) ?: 0.0
