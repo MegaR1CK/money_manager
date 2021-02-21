@@ -43,7 +43,7 @@ class UserData {
         database.child("lastCheckTime").get()
             .addOnSuccessListener { it ->
                 val lastCheckTime = it.getValue<Long>() ?: Date().time
-                val importChecks = checks?.filter { it.allowImport }?.map { it.number ?: ""}
+                val importChecks = checks?.filter { it.allowImport }?.map { it.number }
                 val lastTransactions = smsManager
                     ?.getSmsTransactions(importChecks, LongRange(lastCheckTime, Date().time))
                 lastTransactions?.forEach { transaction ->
@@ -85,7 +85,7 @@ class UserData {
                 }
     }
 
-    fun getTransactions(context: Context, operation: () -> Unit) {
+    private fun getTransactions(context: Context, operation: () -> Unit) {
         userDbRef.child("transactions").get()
             .addOnSuccessListener { it1 ->
                 val response = mutableListOf<Transaction>()
@@ -98,7 +98,7 @@ class UserData {
             }
     }
 
-    private fun getTransactionCategories(context: Context, operation: () -> Unit) {
+    fun getTransactionCategories(context: Context, operation: () -> Unit) {
         val databaseCat = Firebase.database.reference.child("categories")
         val response = mutableMapOf<String, List<String>>()
         databaseCat.get()

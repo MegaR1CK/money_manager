@@ -46,7 +46,7 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
                     )
             )
         }
-        if (numbers?.isNotEmpty() == true)
+        if (numbers != null)
             transactions = transactions.filter { numbers.contains(it.card) }.toMutableList()
         if (range != null)
             transactions = transactions.filter { it.timeMillis in range}.toMutableList()

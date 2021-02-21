@@ -14,6 +14,7 @@ import com.hfad.moneymanager.R
 import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.DataCheckResponse
 import kotlinx.android.synthetic.main.activity_add_check.*
+import kotlin.random.Random
 
 class AddCheckActivity : AppCompatActivity() {
     //TODO: label
@@ -63,22 +64,26 @@ class AddCheckActivity : AppCompatActivity() {
                         field_check_name.text.toString(),
                         if (pos == 0) Check.CheckType.Cash
                         else Check.CheckType.Card,
-                        balance = balance.toDouble()
+                        Random.nextInt(1000, 9999).toString(),
+                        balance.toDouble()
                 ))
                 App.userData?.getChecks(this) { finish() }
             }
             else {
                 val number = field_check_number.text.toString()
-                val newRef = database.push()
-                newRef.setValue(Check(
-                        newRef.key ?: "",
-                        field_check_name.text.toString(),
-                        Check.CheckType.SberCard,
-                        if (number.isNotBlank() && number.length == 4) number else null,
-                        balance.toDouble(),
-                        checkbox_check_import.isChecked
-                ))
-                App.userData?.getChecks(this) { finish() }
+                if (number.length == 4) {
+                    val newRef = database.push()
+                    newRef.setValue(Check(
+                            newRef.key ?: "",
+                            field_check_name.text.toString(),
+                            Check.CheckType.SberCard,
+                            number,
+                            balance.toDouble(),
+                            checkbox_check_import.isChecked
+                    ))
+                    App.userData?.getChecks(this) { finish() }
+                }
+                else App.errorAlert(getString(R.string.error_incorrect_input), this)
             }
         }
         else App.errorAlert(checkResp.message, this)

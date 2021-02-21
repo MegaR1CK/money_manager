@@ -19,6 +19,7 @@ import com.hfad.moneymanager.models.Check.CheckType
 import com.hfad.moneymanager.models.Transaction
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.util.*
+import kotlin.random.Random
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -69,6 +70,8 @@ class WelcomeActivity : AppCompatActivity() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        App.userData?.getTransactionCategories(this) {}
+
         btn_welcome_accept.setOnClickListener {
             var success = true
             val smsManager = App.userData?.categories?.let { it1 -> SMSManager(this, it1) }
@@ -86,7 +89,8 @@ class WelcomeActivity : AppCompatActivity() {
                 newRef.setValue(Check(
                         newRef.key ?: "",
                         getString(R.string.cash_title),
-                        CheckType.Cash, null,
+                        CheckType.Cash,
+                        Random.nextInt(1000, 9999).toString(),
                         field_cash_start_amount.text.toString().toDoubleOrNull() ?: 0.0
                 ))
             }
@@ -100,7 +104,7 @@ class WelcomeActivity : AppCompatActivity() {
                             newRef.key ?: "",
                             getString(R.string.sber_card_title),
                             CheckType.SberCard,
-                            if (number.isBlank()) null else number,
+                            number,
                             transactions?.first()?.balance ?: 0.0,
                             checkbox_import.isChecked
                     ))
@@ -120,7 +124,8 @@ class WelcomeActivity : AppCompatActivity() {
                 val newRef = databaseUser.child("checks").push()
                 newRef.setValue(Check(
                         newRef.key ?: "",
-                        getString(R.string.card_title), CheckType.Card, null,
+                        getString(R.string.card_title), CheckType.Card,
+                        Random.nextInt(1000, 9999).toString(),
                         field_card_start_amount.text.toString().toDoubleOrNull() ?: 0.0
                 ))
             }
