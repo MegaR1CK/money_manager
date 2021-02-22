@@ -12,15 +12,15 @@ import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.models.DataCheckResponse
 import com.hfad.moneymanager.models.Debt
-import kotlinx.android.synthetic.main.activity_add_debt.*
+import kotlinx.android.synthetic.main.activity_edit_debt.*
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.parser.UnderscoreDigitSlotsParser
 import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 
-class AddDebtActivity : AppCompatActivity() {
+class EditDebtActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_debt)
+        setContentView(R.layout.activity_edit_debt)
         setSupportActionBar(add_debt_toolbar as Toolbar)
         val mask = MaskImpl
             .createTerminated(UnderscoreDigitSlotsParser().parseSlots("__.__.____"))

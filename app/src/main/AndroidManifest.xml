@@ -14,9 +14,9 @@
         android:theme="@style/Theme.MoneyManager">
         <activity android:name=".activities.CheckActivity"/>
         <activity
-            android:name=".activities.AddDebtActivity"/>
+            android:name=".activities.EditDebtActivity"/>
         <activity
-            android:name=".activities.AddCheckActivity"/>
+            android:name=".activities.EditCheckActivity"/>
         <activity
             android:name=".activities.WelcomeActivity"/>
         <activity android:name=".activities.HomeActivity" />

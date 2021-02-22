@@ -67,11 +67,11 @@
             android:src="@drawable/baseline_delete_24"
             android:tint="@color/dark_blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/btn_check_rename"
+            app:layout_constraintStart_toEndOf="@id/btn_check_edit"
             app:layout_constraintTop_toBottomOf="@+id/check_act_logo" />
 
         <ImageButton
-            android:id="@+id/btn_check_rename"
+            android:id="@+id/btn_check_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_check_rename">
+            app:layout_constraintTop_toBottomOf="@+id/btn_check_edit">
 
             <TextView
                 android:id="@+id/check_stats_title"

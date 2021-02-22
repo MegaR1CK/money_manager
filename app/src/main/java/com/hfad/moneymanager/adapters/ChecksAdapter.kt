@@ -31,11 +31,7 @@ class ChecksAdapter (private val checks: List<Check>, private var transactions: 
         else view.check_balance.text = String.format(view.context.getString(R.string.amount),
                 check.balance)
         view.check_name.text = check.name
-        view.check_logo.setImageResource(when (check.type) {
-            CheckType.SberCard -> R.drawable.sber_logo
-            CheckType.Card -> R.drawable.card_logo
-            CheckType.Cash -> R.drawable.cash_logo
-        })
+        view.check_logo.setImageResource(check.getCheckLogo())
         view.setOnClickListener {
             onCheckClickListener.onCheckClick(position)
         }

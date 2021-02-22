@@ -10,8 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
-import com.hfad.moneymanager.activities.AddCheckActivity
-import com.hfad.moneymanager.activities.AddDebtActivity
+import com.hfad.moneymanager.activities.EditCheckActivity
+import com.hfad.moneymanager.activities.EditDebtActivity
 import com.hfad.moneymanager.activities.CheckActivity
 import com.hfad.moneymanager.adapters.ChecksAdapter
 import com.hfad.moneymanager.adapters.DebtAdapter
@@ -29,11 +29,11 @@ class ChecksFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_checks, container, false)
 
         view.btn_add_check.setOnClickListener {
-            startActivity(Intent(activity, AddCheckActivity::class.java))
+            startActivity(Intent(activity, EditCheckActivity::class.java))
         }
 
         view.btn_add_debt.setOnClickListener {
-            startActivity(Intent(activity, AddDebtActivity::class.java))
+            startActivity(Intent(activity, EditDebtActivity::class.java))
         }
 
         return view

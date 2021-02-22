@@ -21,7 +21,7 @@ class SMSManager (val context: Context, private val categories: MutableMap<Strin
         val purchaseRegex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Покупка (\\d+|\\d+.\\d+)р (.+) Баланс: (\\d+.\\d+)р"
         val purchasePattern = Pattern.compile(purchaseRegex)
 
-        val transferToUserRegex = "Перевод (\\d+)р от (.+) Баланс ECMC(\\d{4}): (\\d+.\\d+)р"
+        val transferToUserRegex = "Перевод (\\d+)р от (.+)\nБаланс ECMC(\\d{4}): (\\d+.\\d+)р"
         val transferToUserPattern = Pattern.compile(transferToUserRegex)
 
         val paymentRegex = "ECMC(\\d{4}) (\\d{2}:\\d{2}) Оплата (\\d+|\\d+.\\d+)р Баланс: (\\d+.\\d+)р"

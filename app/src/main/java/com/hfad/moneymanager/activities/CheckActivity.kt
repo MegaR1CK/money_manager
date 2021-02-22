@@ -1,9 +1,10 @@
 package com.hfad.moneymanager.activities
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.ktx.auth
@@ -12,8 +13,6 @@ import com.google.firebase.ktx.Firebase
 import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.adapters.TransactionsAdapter
-import com.hfad.moneymanager.models.Check
-import com.hfad.moneymanager.models.Transaction
 import com.hfad.moneymanager.models.Transaction.TransactionType
 import kotlinx.android.synthetic.main.activity_check.*
 import kotlin.math.abs
@@ -22,7 +21,7 @@ class CheckActivity : AppCompatActivity() {
 
     companion object { const val CHECK_POS = "check_pos" }
 
-    val database = Firebase.database.reference
+    private val database = Firebase.database.reference
             .child("users")
             .child(Firebase.auth.currentUser?.uid ?: "")
             .child("checks")
@@ -30,17 +29,9 @@ class CheckActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_check)
-        //TODO: виды транзакций
-        val check = intent?.extras?.getInt(CHECK_POS)?.let { App.userData?.checks?.get(it) }
-        check_act_name.text = check?.name
-        check_act_balance.text = String.format(getString(R.string.amount), check?.balance)
-        check_act_number.text = check?.number
-        check_act_logo.setImageResource(when (check?.type) {
-            Check.CheckType.SberCard -> R.drawable.sber_logo
-            Check.CheckType.Card -> R.drawable.card_logo
-            Check.CheckType.Cash -> R.drawable.cash_logo
-            else -> R.drawable.icon_cat_unknown
-        })
+
+        val checkPos = intent?.extras?.getInt(CHECK_POS)
+        val check = checkPos?.let { App.userData?.checks?.get(it) }
 
         val incomes = App.userData?.transactions
                 ?.filter { it.card == check?.number && it.type == TransactionType.Income }
@@ -87,5 +78,20 @@ class CheckActivity : AppCompatActivity() {
                     .create()
                     .show()
         }
+
+        btn_check_edit.setOnClickListener {
+            startActivity(Intent(this, EditCheckActivity::class.java)
+                    .putExtra(EditCheckActivity.CHECK_POS, checkPos))
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val checkPos = intent?.extras?.getInt(CHECK_POS)
+        val check = checkPos?.let { App.userData?.checks?.get(it) }
+        check_act_name.text = check?.name
+        check_act_balance.text = String.format(getString(R.string.amount), check?.balance)
+        check_act_number.text = check?.number
+        check_act_logo.setImageResource(check?.getCheckLogo() ?: R.drawable.icon_cat_unknown)
     }
 }

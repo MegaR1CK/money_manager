@@ -13,15 +13,21 @@ import com.hfad.moneymanager.App
 import com.hfad.moneymanager.R
 import com.hfad.moneymanager.models.Check
 import com.hfad.moneymanager.models.DataCheckResponse
-import kotlinx.android.synthetic.main.activity_add_check.*
+import kotlinx.android.synthetic.main.activity_edit_check.*
 import kotlin.random.Random
 
-class AddCheckActivity : AppCompatActivity() {
-    //TODO: label
+class EditCheckActivity : AppCompatActivity() {
+
+    companion object { const val CHECK_POS = "check_pos" }
+
+    private var check: Check? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_check)
+        setContentView(R.layout.activity_edit_check)
         setSupportActionBar(add_check_toolbar)
+
+        check = intent?.extras?.getInt(CHECK_POS)?.let { App.userData?.checks?.get(it) }
 
         spinner_check_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -37,6 +43,18 @@ class AddCheckActivity : AppCompatActivity() {
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+
+        check?.let {
+            field_check_name.setText(it.name)
+            field_check_number.setText(it.number)
+            field_start_amount.setText(it.balance.toString())
+            spinner_check_type.setSelection(when (it.type) {
+                Check.CheckType.Cash -> 0
+                Check.CheckType.SberCard -> 1
+                Check.CheckType.Card -> 2
+            })
+            checkbox_check_import.isChecked = it.allowImport
         }
     }
 
@@ -58,9 +76,11 @@ class AddCheckActivity : AppCompatActivity() {
         if (checkResp.isSuccessful) {
             val pos = spinner_check_type.selectedItemPosition
             if (pos == 0 || pos == 2) {
-                val newRef = database.push()
-                newRef.setValue(Check(
-                        newRef.key ?: "",
+                val checkRef =
+                        if (check != null) database.child(check?.id ?: "")
+                        else database.push()
+                checkRef.setValue(Check(
+                        checkRef.key ?: "",
                         field_check_name.text.toString(),
                         if (pos == 0) Check.CheckType.Cash
                         else Check.CheckType.Card,
@@ -72,9 +92,11 @@ class AddCheckActivity : AppCompatActivity() {
             else {
                 val number = field_check_number.text.toString()
                 if (number.length == 4) {
-                    val newRef = database.push()
-                    newRef.setValue(Check(
-                            newRef.key ?: "",
+                    val checkRef =
+                            if (check != null) database.child(check?.id ?: "")
+                            else database.push()
+                    checkRef.setValue(Check(
+                            checkRef.key ?: "",
                             field_check_name.text.toString(),
                             Check.CheckType.SberCard,
                             number,
