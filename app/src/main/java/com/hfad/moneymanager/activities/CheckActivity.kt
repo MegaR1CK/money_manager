@@ -15,6 +15,8 @@ import com.hfad.moneymanager.R
 import com.hfad.moneymanager.adapters.TransactionsAdapter
 import com.hfad.moneymanager.models.Transaction.TransactionType
 import kotlinx.android.synthetic.main.activity_check.*
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.math.abs
 
 class CheckActivity : AppCompatActivity() {
@@ -34,11 +36,13 @@ class CheckActivity : AppCompatActivity() {
         val check = checkPos?.let { App.userData?.checks?.get(it) }
 
         val incomes = App.userData?.transactions
-                ?.filter { it.card == check?.number && it.type == TransactionType.Income }
+                ?.filter { it.card == check?.number && it.type == TransactionType.Income &&
+                        getPeriodInMonth(it.date) == 0 }
                 ?.sumOf { it.amount }
         check_incomes.text = String.format(getString(R.string.amount), incomes)
         val expenses = App.userData?.transactions
-                ?.filter { it.card == check?.number && it.type == TransactionType.Expense }
+                ?.filter { it.card == check?.number && it.type == TransactionType.Expense &&
+                        getPeriodInMonth(it.date) == 0}
                 ?.sumOf { it.amount }
         check_expenses.text = String.format(getString(R.string.amount), expenses)
         val thread = incomes?.minus((expenses ?: 0.0)) ?: 0.0
@@ -93,5 +97,14 @@ class CheckActivity : AppCompatActivity() {
         check_act_balance.text = String.format(getString(R.string.amount), check?.balance)
         check_act_number.text = check?.number
         check_act_logo.setImageResource(check?.getCheckLogo() ?: R.drawable.icon_cat_unknown)
+    }
+
+    private fun getPeriodInMonth(date: String): Int {
+        val sdf = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val currentCalendar = Calendar.getInstance(TimeZone.getDefault())
+        currentCalendar.time = Date()
+        val secondCalendar = Calendar.getInstance(TimeZone.getDefault())
+        secondCalendar.time = sdf.parse(date) ?: Date()
+        return currentCalendar.get(Calendar.MONTH) - secondCalendar.get(Calendar.MONTH)
     }
 }

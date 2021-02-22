@@ -26,6 +26,7 @@
     <string name="cash_title_welcome">Счет наличных</string>
     <string name="card_title_welcome">Счет банковской карты</string>
     <string name="start_amount">Начальная сумма:</string>
+    <string name="balance_title">Баланс:</string>
     <string name="card_type">Банк карты:</string>
     <string-array name="card_types">
         <item>Сбербанк</item>
